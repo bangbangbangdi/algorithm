@@ -1,39 +1,38 @@
 package myClass01;
 
 
-public class Code04_BSExist {
-    public static boolean binarySearch(int[] arr, int i) {
+public class Code05_BSNearRight {
+    // 在arr上，找满足<=value的最右位置
+    public static int binarySearchNearLeft(int[] arr, int num) {
         if ((arr == null) || arr.length == 0) {
-            return false;
+            return -1;
         }
         int L = 0;
         int R = arr.length - 1;
-        while (L < R) {
+        int index = -1;
+        while (L <= R) {
             int mid = L + ((R - L) >> 1);
-            if(arr[mid] == i){
-                return true;
-            }else if(arr[mid] > i){
-                R = mid -1;
-            }else{
+            if (arr[mid] <= num){
+                index = mid;
                 L = mid + 1;
+            }else{
+                R = mid - 1;
             }
         }
-        return arr[L] == i;
+        return index;
     }
 
-    public static boolean comparator(int[] arr,int num){
-        for (int i = 0; i < arr.length; i++) {
-            if (arr[i] == num){
-                return true;
+    public static int comparator(int[] arr,int num){
+        int index = -1;
+        for (int i = arr.length-1; i >= 0; i--) {
+            if (arr[i] <= num){
+                return i;
             }
         }
-        return false;
+        return index;
     }
 
     public static int[] generateRandomArray(int maxSize, int maxValue) {
-        // Math.random() ->  [0,1) 所有的小数，等概率返回一个
-        // Math.random() * N -> [0,N) 所有小数，等概率返回一个
-        // (int)(Math.random() * N) -> [0,N-1] 所有的整数，等概率返回一个
         int[] arr = new int[(int) ((maxSize + 1) * Math.random())]; // 长度随机
         for (int i = 0; i < arr.length; i++) {
             arr[i] = (int) ((maxValue + 1) * Math.random())
@@ -86,19 +85,26 @@ public class Code04_BSExist {
 
     public static void main(String[] args) {
         int testTime = 500000;
-        int maxSize = 100; // 随机数组的长度0～100
+        int maxSize = 10; // 随机数组的长度0～100
         int maxValue = 100;// 值：-100～100
         int randomNum = (int) ((maxValue+1)*Math.random());
         boolean succeed = true;
         for (int i = 0; i < testTime; i++) {
             int[] arr1 = generateRandomArray(maxSize, maxValue);
             insertionSort(arr1);
-            if (binarySearch(arr1,randomNum) != comparator(arr1,randomNum)){
+            if (binarySearchNearLeft(arr1,randomNum) != comparator(arr1,randomNum)){
+                System.out.println("=============");
+                printArray(arr1);
+                System.out.println(randomNum);
+                System.out.println(binarySearchNearLeft(arr1,randomNum));
+                System.out.println(comparator(arr1,randomNum));
                 succeed = false;
                 break;
             }
         }
         System.out.println(succeed ? "Nice!" : "Fucking fucked!");
-
+//        int[] arr = {-51,-37,-36,-13,-11,8,30,64,66};
+//        int num = 99;
+//        System.out.println(binarySearchNearLeft(arr,num));
     }
 }
