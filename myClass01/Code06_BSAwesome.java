@@ -1,9 +1,13 @@
 package myClass01;
 
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+
 public class Code06_BSAwesome {
     // arr 中的所有数相邻不等 找出一个局部最小值
-    public static int binarySearchAwesome(int[] arr, int num) {
+    public static int binarySearchAwesome(int[] arr) {
         if ((arr == null) || arr.length == 0) {
             return -1;
         }
@@ -30,21 +34,35 @@ public class Code06_BSAwesome {
         return index;
     }
 
-    public static int comparator(int[] arr, int num) {
-        int index = -1;
-        for (int i = arr.length - 1; i >= 0; i--) {
-            if (arr[i] <= num) {
-                return i;
-            }
+    public static boolean comparator(int[] arr, int index) {
+        if ((arr == null) || (arr.length == 0)){
+            return index == -1;
         }
-        return index;
+        if (arr.length == 1){
+            return 0 == index;
+        }else if (index == 0){
+            return arr[0]<arr[1];
+        }else if (index == arr.length -1){
+            return arr[arr.length-1] < arr[arr.length-2];
+        }else{
+            return arr[index]<arr[index-1] && arr[index] < arr[index+1];
+        }
+
     }
 
     public static int[] generateRandomArray(int maxSize, int maxValue) {
-        int[] arr = new int[(int) ((maxSize + 1) * Math.random())]; // 长度随机
+        int size = (int) ((maxSize + 1) * Math.random());
+        int[] arr = new int[size]; // 长度随机
+        HashSet set = new HashSet();
+        while(true){
+            if (set.size() == size){
+                break;
+            }
+            set.add((int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random()));
+        }
+        Iterator iterator = set.iterator();
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) ((maxValue + 1) * Math.random())
-                    - (int) (maxValue * Math.random());
+            arr[i] = (int) iterator.next();
         }
         return arr;
     }
@@ -99,21 +117,18 @@ public class Code06_BSAwesome {
         int randomNum = (int) ((maxValue + 1) * Math.random());
         boolean succeed = true;
         for (int i = 0; i < testTime; i++) {
-            int[] arr1 = generateRandomArray(maxSize, maxValue);
-            insertionSort(arr1);
-            if (binarySearchAwesome(arr1, randomNum) != comparator(arr1, randomNum)) {
-                System.out.println("=============");
-                printArray(arr1);
-                System.out.println(randomNum);
-                System.out.println(binarySearchAwesome(arr1, randomNum));
-                System.out.println(comparator(arr1, randomNum));
+            int[] arr = generateRandomArray(maxSize, maxValue);
+            int index = binarySearchAwesome(arr);
+            if (!comparator(arr,index)){
                 succeed = false;
                 break;
             }
         }
         System.out.println(succeed ? "Nice!" : "Fucking fucked!");
-//        int[] arr = {-51,-37,-36,-13,-11,8,30,64,66};
-//        int num = 99;
-//        System.out.println(binarySearchAwesome(arr,num));
+//        int[] ints = generateRandomArray(maxSize, maxValue);
+//        printArray(ints);
+//        int index = binarySearchAwesome(ints);
+//        System.out.println(index);
+//        System.out.println(ints[index]);
     }
 }
