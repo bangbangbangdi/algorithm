@@ -78,9 +78,11 @@ public class Code04_RingArray {
         LinkedList<Integer> queue = new LinkedList<>();
 
         for (int i = 0; i < 500000; i++) {
-            int size = (int) Math.random() * 20;
+            int size = (int) (Math.random() * 20);
+            System.out.println("size: "+size);
             for (int j = 0; j < size; j++) {
                 int randomInt = getRandomInt(100);
+                System.out.println("randomInt: "+randomInt);
                 if (myQueue.isEmpty() & queue.isEmpty()) {
                     myQueue.push(randomInt);
                     queue.push(randomInt);
@@ -91,6 +93,7 @@ public class Code04_RingArray {
                 }else{
                     int myPop = myQueue.pop();
                     int pop = queue.pop();
+                    System.out.println("myPop:"+myPop+" pop:"+pop);
                     if (myPop != pop){
                         System.out.println("Fuck!");
                         break;
