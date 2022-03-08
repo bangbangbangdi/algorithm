@@ -43,26 +43,37 @@ public class Code04_RingArray {
             return size == 0;
         }
 
+        public boolean isAvailable(){
+            return size < limit;
+        }
+
+        public void printAll(){
+            for (int i = 0; i < arr.length; i++) {
+                System.out.print(arr[i]+" ");
+            }
+            System.out.println();
+        }
+
         public int nextIndex(int index) {
             return index < limit - 1 ? index + 1 : 0;
         }
     }
 
-    public static class MyStack{
+    public static class MyStack {
         public int limit;
         public int index;
         public int[] arr;
         public int size;
 
-        public MyStack(int l){
+        public MyStack(int l) {
             arr = new int[l];
             limit = l;
             index = 0;
             size = 0;
         }
 
-        public void push(int i){
-            if(size >= limit){
+        public void push(int i) {
+            if (size >= limit) {
                 throw new RuntimeException("栈满了");
             }
         }
@@ -79,22 +90,27 @@ public class Code04_RingArray {
 
         for (int i = 0; i < 500000; i++) {
             int size = (int) (Math.random() * 20);
-            System.out.println("size: "+size);
+            System.out.println("size: " + size);
             for (int j = 0; j < size; j++) {
-                int randomInt = getRandomInt(100);
-                System.out.println("randomInt: "+randomInt);
-                if (myQueue.isEmpty() & queue.isEmpty()) {
+                if (((myQueue.isEmpty() & queue.isEmpty()) || Math.random() < 0.5) && myQueue.isAvailable()) {
+//                    System.out.println("push");
+                    int randomInt = getRandomInt(100);
+//                    System.out.println("randomInt: " + randomInt);
                     myQueue.push(randomInt);
-                    queue.push(randomInt);
-                }
-                if (Math.random() < 0.5) {
-                    myQueue.push(randomInt);
-                    queue.push(randomInt);
-                }else{
+                    queue.offer(randomInt);
+//                    myQueue.printAll();
+//                    for (int k = 0; k < queue.size(); k++) {
+//                        System.out.print(queue.get(k)+" ");
+//                    }
+//                    System.out.println();
+//                    System.out.println("----------");
+                } else {
+//                    System.out.println("pop");
                     int myPop = myQueue.pop();
-                    int pop = queue.pop();
-                    System.out.println("myPop:"+myPop+" pop:"+pop);
-                    if (myPop != pop){
+                    int pop = queue.poll();
+//                    System.out.println("myPop:" + myPop + " pop:" + pop);
+//                    System.out.println("--------");
+                    if (myPop != pop) {
                         System.out.println("Fuck!");
                         break;
                     }
