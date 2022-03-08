@@ -28,10 +28,13 @@ public class Code01_ReverseList {
 
         while (head != null) {
             next = head.next;
+
             head.next = pre;
             pre = head;
+
             head = next;
         }
+
         return pre;
     }
 
@@ -49,29 +52,30 @@ public class Code01_ReverseList {
     }
 
 
-    public static Node addNodeList(Node head,int data){
-        if(head == null){
+    public static Node addNodeList(Node head, int data) {
+        if (head == null) {
             return new Node(data);
         }
         Node cur = head;
-        while(cur.next !=null){
+        while (cur.next != null) {
             cur = cur.next;
         }
         cur.next = new Node(data);
         return head;
     }
 
-    public static void printNode(Node head){
-        while(head!=null){
-            System.out.print(head.value+" ");
+    public static void printNode(Node head) {
+        while (head != null) {
+            System.out.print(head.value + " ");
             head = head.next;
         }
     }
-    public static void test(){
+
+    public static void test() {
         Node node = addNodeList(null, 1);
-        addNodeList(node,2);
-        addNodeList(node,3);
-        addNodeList(node,4);
+        addNodeList(node, 2);
+        addNodeList(node, 3);
+        addNodeList(node, 4);
         printNode(node);
         Node reverseList = reverseLinkedList(node);
         System.out.println();
