@@ -2,6 +2,7 @@ package myClass02;
 
 
 import java.util.LinkedList;
+import java.util.Stack;
 
 public class Code04_RingArray {
 
@@ -43,13 +44,13 @@ public class Code04_RingArray {
             return size == 0;
         }
 
-        public boolean isAvailable(){
+        public boolean isAvailable() {
             return size < limit;
         }
 
-        public void printAll(){
+        public void printAll() {
             for (int i = 0; i < arr.length; i++) {
-                System.out.print(arr[i]+" ");
+                System.out.print(arr[i] + " ");
             }
             System.out.println();
         }
@@ -76,6 +77,26 @@ public class Code04_RingArray {
             if (size >= limit) {
                 throw new RuntimeException("栈满了");
             }
+            arr[index] = i;
+            index++;
+            size++;
+        }
+
+        public int pop(){
+            if(size <=0){
+                throw new RuntimeException("栈空了");
+            }
+            index--;
+            size--;
+            return arr[index];
+        }
+
+        public boolean isEmpty(){
+            return size==0;
+        }
+
+        public boolean isAvailable(){
+            return size < limit;
         }
     }
 
@@ -85,31 +106,32 @@ public class Code04_RingArray {
     }
 
     public static void main(String[] args) {
+        MyStack myStack = new MyStack(20);
         MyQueue myQueue = new MyQueue(20);
         LinkedList<Integer> queue = new LinkedList<>();
-
+        Stack<Integer> stack = new Stack<>();
         for (int i = 0; i < 500000; i++) {
             int size = (int) (Math.random() * 20);
-            System.out.println("size: " + size);
             for (int j = 0; j < size; j++) {
                 if (((myQueue.isEmpty() & queue.isEmpty()) || Math.random() < 0.5) && myQueue.isAvailable()) {
-//                    System.out.println("push");
                     int randomInt = getRandomInt(100);
-//                    System.out.println("randomInt: " + randomInt);
                     myQueue.push(randomInt);
                     queue.offer(randomInt);
-//                    myQueue.printAll();
-//                    for (int k = 0; k < queue.size(); k++) {
-//                        System.out.print(queue.get(k)+" ");
-//                    }
-//                    System.out.println();
-//                    System.out.println("----------");
                 } else {
-//                    System.out.println("pop");
                     int myPop = myQueue.pop();
                     int pop = queue.poll();
-//                    System.out.println("myPop:" + myPop + " pop:" + pop);
-//                    System.out.println("--------");
+                    if (myPop != pop) {
+                        System.out.println("Fuck!");
+                        break;
+                    }
+                }
+                if(((myStack.isEmpty()&stack.isEmpty()) || Math.random() < 0.5 ) && myStack.isAvailable()){
+                    int randomInt = getRandomInt(100);
+                    myStack.push(randomInt);
+                    stack.push(randomInt);
+                }else{
+                    int myPop = myStack.pop();
+                    int pop = stack.pop();
                     if (myPop != pop) {
                         System.out.println("Fuck!");
                         break;
