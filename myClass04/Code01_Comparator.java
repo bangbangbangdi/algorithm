@@ -1,9 +1,9 @@
-package myClass03;
+package myClass04;
 
 
 import java.util.Arrays;
 
-public class Code01_MergeSort {
+public class Code01_Comparator {
     public static void merge(int[] arr, int L, int M, int R) {
         int[] help = new int[R - L + 1];
         int i = 0;

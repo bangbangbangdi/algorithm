@@ -1,16 +1,1 @@
-package myClass03;
-
-
-import java.util.LinkedList;
-
-public class Test {
-    public static void main(String[] args) {
-        LinkedList<Integer> queue = new LinkedList<>();
-        queue.offer(10);
-        queue.offer(20);
-        queue.offer(30);
-        System.out.println(queue.poll());
-        System.out.println(queue.poll());
-        System.out.println(queue.poll());
-    }
-}
+//{24,42,-26,-35,-30,21,-25,26,48,5,34,-3,-39,-47,-78,18,69,-8,33,-80,-20,-73,-39,50,-37,5,29,22,-36,-5,-51,-12,16,-21,-13,14,31,32,10,10,40,80,32,-22,-2,13,8,-36,0,56,-19,-21,-75,-54,59,22,-33,52,6,-79,56,-37,39,-39,49,84,-2,-21,-34,-25,0,26,-33,-34,35,77,41,-19,1,-57,12,8,-30,37,-70,41,46,89,29,56,}
