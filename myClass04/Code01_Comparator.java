@@ -2,126 +2,105 @@ package myClass04;
 
 
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 public class Code01_Comparator {
-    public static void merge(int[] arr, int L, int M, int R) {
-        int[] help = new int[R - L + 1];
-        int i = 0;
-        int p1 = L;
-        int p2 = M + 1;
-        while (p1 <= M && p2 <= R) {
-            help[i++] = arr[p1] <= arr[p2] ? arr[p1++] : arr[p2++];
-        }
-        while (p1 <= M) {
-            help[i++] = arr[p1++];
-        }
-        while (p2 <= R) {
-            help[i++] = arr[p2++];
-        }
-        for (int j = 0; j < help.length; j++) {
-            arr[L + j] = help[j];
+    public static class Student {
+        private int age;
+        private int id;
+        private String name;
+
+        public Student(int age, int id, String name) {
+            this.age = age;
+            this.id = id;
+            this.name = name;
         }
     }
 
-    public static void process(int[] arr, int L, int R) {
-        if (L == R) {
-            return;
-        }
-        int mid = L + ((R - L) >> 1);
-        process(arr, L, mid);
-        process(arr, mid + 1, R);
-        merge(arr, L, mid, R);
-    }
-
-    public static void mergeSort1(int[] arr) {
-        if (arr.length < 2) {
-            return;
-        }
-        process(arr, 0, arr.length - 1);
-    }
-
-
-    public static void mergeSort2(int[] arr) {
-        int N = arr.length;
-        int mergeSize = 1;
-        while (mergeSize < N) {
-            int L = 0;
-            while (L < N) {
-
-                int M = L + mergeSize - 1;
-                if (M > N) {
-                    break;
-                }
-                int R = Math.min(M + mergeSize, N - 1);
-                merge(arr, L, M, R);
-                L = R + 1;
-            }
-            if (mergeSize > N / 2) {
-                break;
-            }
-            mergeSize <<= 1;
+    public static void printAllStudent(Student[] students) {
+        for (int i = 0; i < students.length; i++) {
+            System.out.println(students[i].name + "--" + students[i].age + "--" + students[i].id);
         }
     }
 
-    public static int[] getRandomIntArr(int size, int maxValue) {
-        int[] arr = new int[size];
-        for (int i = 0; i < size; i++) {
-            arr[i] = (int) (Math.random() * maxValue - Math.random() * maxValue);
+    public static class IdAscendComparator implements Comparator<Student> {
+
+        @Override
+        public int compare(Student o1, Student o2) {
+            return o1.id - o2.id;
         }
-        return arr;
     }
 
-    public static void comparator(int[] arr) {
-        Arrays.sort(arr);
+    public static class IdDescendComparator implements Comparator<Student> {
+
+        @Override
+        public int compare(Student o1, Student o2) {
+            return o2.id - o1.id;
+        }
     }
 
-    public static boolean isEqual(int[] arr1, int[] arr2) {
-        if (arr1 == null && arr2 == null) {
-            return true;
+    public static class AgeAscendComparator implements Comparator<Student> {
+
+        @Override
+        public int compare(Student o1, Student o2) {
+            return o1.age - o2.age;
         }
-        if ((arr1 == null && arr2 != null) || (arr1 != null && arr2 == null)) {
-            return false;
-        }
-        if (arr1.length != arr2.length) {
-            return false;
-        }
-        for (int i = 0; i < arr1.length; i++) {
-            if (arr1[i] != arr2[i]) {
-                return false;
-            }
-        }
-        return true;
     }
 
-    public static int[] copyArr(int[] arr) {
-        if (arr == null) {
-            return null;
+    public static class AgeDescendComparator implements Comparator<Student> {
+
+        @Override
+        public int compare(Student o1, Student o2) {
+            return o2.age - o1.age;
         }
-        int[] result = new int[arr.length];
-        for (int i = 0; i < arr.length; i++) {
-            result[i] = arr[i];
-        }
-        return result;
     }
 
-    public static void printArr(int[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print(arr[i] + " ");
+    public static class IdInAgeIn implements Comparator<Student> {
+
+        @Override
+        public int compare(Student o1, Student o2) {
+            return o1.id == o2.id ? (o1.age - o2.age) : (o1.id - o2.id);
         }
-        System.out.println();
+    }
+
+    public static class MyCom implements Comparator<Integer> {
+
+        @Override
+        public int compare(Integer o1, Integer o2) {
+            return o2 - o1;
+        }
     }
 
     public static void main(String[] args) {
-        for (int i = 0; i < 500000; i++) {
-            int[] randomIntArr = getRandomIntArr(20, 100);
-            int[] copyArr = copyArr(randomIntArr);
-            mergeSort2(randomIntArr);
-            comparator(copyArr);
-            if (!isEqual(randomIntArr, copyArr)) {
-                System.out.println("Fuck!!!");
-                return;
-            }
+        Student stu1 = new Student(10, 111, "咩咩");
+        Student stu4 = new Student(15, 111, "咩咩");
+        Student stu2 = new Student(20, 222, "吱吱");
+        Student stu5 = new Student(25, 222, "吱吱");
+        Student stu3 = new Student(30, 333, "嘻嘻");
+        Student[] students = {stu1, stu2, stu3, stu4, stu5};
+
+        System.out.println("====第一次打印===");
+        Arrays.sort(students, new IdAscendComparator());
+        printAllStudent(students);
+        System.out.println("====第二次打印===");
+        Arrays.sort(students, new IdDescendComparator());
+        printAllStudent(students);
+        System.out.println("====第三次打印===");
+        Arrays.sort(students, new IdInAgeIn());
+        printAllStudent(students);
+
+        System.out.println("============================");
+        System.out.println("============================");
+        System.out.println("============================");
+
+        PriorityQueue<Integer> heap = new PriorityQueue<>(new MyCom());
+        heap.add(1);
+        heap.add(2);
+        heap.add(3);
+        heap.add(4);
+        while(!heap.isEmpty()){
+            System.out.println(heap.poll());
         }
-        System.out.println("Succeed!!!");
     }
 }
