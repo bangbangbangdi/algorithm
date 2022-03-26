@@ -11,12 +11,37 @@ public class Tools {
         return arr;
     }
 
+    public static int[] generateRandomArray(int maxSize, int maxValue,boolean isContainNegative) {
+        int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
+        if (isContainNegative){
+            for (int i = 0; i < arr.length; i++) {
+                arr[i] = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
+            }
+            return arr;
+        }else{
+            for (int i = 0; i < arr.length; i++) {
+                arr[i] = (int) ((maxValue + 1) * Math.random());
+            }
+            return arr;
+        }
+    }
+
     public static void printArray(int[] arr) {
         if (arr == null) {
             return;
         }
         for (int i = 0; i < arr.length; i++) {
             System.out.print(arr[i] + " ");
+        }
+        System.out.println();
+    }
+
+    public static void printStringArray(String[] str) {
+        if (str == null){
+            return;
+        }
+        for (int i = 0; i < str.length; i++) {
+            System.out.print(str[i] + " ");
         }
         System.out.println();
     }
@@ -65,5 +90,21 @@ public class Tools {
 
     public static int getRandomInt(int maxValue) {
         return (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
+    }
+
+    public static String generateRandomString(int strLen) {
+        char[] chars = new char[(int) (strLen * Math.random() + 1)];
+        for (int i = 0; i < chars.length; i++) {
+            chars[i] = (char) ((int) (Math.random() * 6) + 97);
+        }
+        return String.valueOf(chars);
+    }
+
+    public static String[] generateRandomStringArray(int arrLen, int strLen) {
+        String[] arr = new String[(int) (arrLen * Math.random() + 1)];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = generateRandomString(strLen);
+        }
+        return arr;
     }
 }
