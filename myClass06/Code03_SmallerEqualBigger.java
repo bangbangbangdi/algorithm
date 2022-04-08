@@ -1,136 +1,189 @@
 package myClass06;
 
+import tool.Node;
+import tool.Tools;
+
 public class Code03_SmallerEqualBigger {
 
-	public static class Node {
-		public int value;
-		public Node next;
+    public static Node listPartition1(Node head, int pivot) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        Node cur = head;
+        int size = 0;
+        int i = 0;
+        while (cur != null) {
+            size++;
+            cur = cur.next;
+        }
+        Node[] arr = new Node[size];
+        cur = head;
+        for (i = 0; i < arr.length; i++) {
+            arr[i] = cur;
+            cur = cur.next;
+        }
+        arrPartition(arr, pivot);
+        for (i = 1; i < arr.length; i++) {
+            arr[i - 1].next = arr[i];
+        }
+        arr[i - 1].next = null;
+        return arr[0];
+    }
 
-		public Node(int data) {
-			this.value = data;
-		}
-	}
+    public static void arrPartition(Node[] arr, int pivot) {
+        int bigIndex = arr.length;
+        int smallIndex = -1;
+        int index = 0;
+        while (index < bigIndex) {
+            if (arr[index].value < pivot) {
+                swapNode(arr, ++smallIndex, index++);
+            } else if (arr[index].value > pivot) {
+                swapNode(arr, --bigIndex, index);
+            } else {
+                index++;
+            }
+        }
+    }
 
-	public static Node listPartition1(Node head, int pivot) {
-		if (head == null) {
-			return head;
-		}
-		Node cur = head;
-		int i = 0;
-		while (cur != null) {
-			i++;
-			cur = cur.next;
-		}
-		Node[] nodeArr = new Node[i];
-		i = 0;
-		cur = head;
-		for (i = 0; i != nodeArr.length; i++) {
-			nodeArr[i] = cur;
-			cur = cur.next;
-		}
-		arrPartition(nodeArr, pivot);
-		for (i = 1; i != nodeArr.length; i++) {
-			nodeArr[i - 1].next = nodeArr[i];
-		}
-		nodeArr[i - 1].next = null;
-		return nodeArr[0];
-	}
+    public static void swapNode(Node[] arr, int i, int j) {
+        Node temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
 
-	public static void arrPartition(Node[] nodeArr, int pivot) {
-		int small = -1;
-		int big = nodeArr.length;
-		int index = 0;
-		while (index != big) {
-			if (nodeArr[index].value < pivot) {
-				swap(nodeArr, ++small, index++);
-			} else if (nodeArr[index].value == pivot) {
-				index++;
-			} else {
-				swap(nodeArr, --big, index);
-			}
-		}
-	}
+    public static Node listPartition2(Node head, int pivot) {
+        Node sH = null;
+        Node sT = null;
+        Node eH = null;
+        Node eT = null;
+        Node mH = null;
+        Node mT = null;
 
-	public static void swap(Node[] nodeArr, int a, int b) {
-		Node tmp = nodeArr[a];
-		nodeArr[a] = nodeArr[b];
-		nodeArr[b] = tmp;
-	}
+        Node cur = head;
+        Node next = null;
+        while (cur != null) {
+            next = cur.next;
+            // 每个节点在进行操作前请先断链，不然可能会出现环的情况
+            cur.next = null;
+            if (cur.value < pivot) {
+                if (sH == null) {
+                    sH = cur;
+                } else {
+                    sT.next = cur;
+                }
+                sT = cur;
+            }
+            if (cur.value == pivot) {
+                if (eH == null) {
+                    eH = cur;
+                } else {
+                    eT.next = cur;
+                }
+                eT = cur;
+            }
+            if (cur.value > pivot) {
+                if (mH == null) {
+                    mH = cur;
+                } else {
+                    mT.next = cur;
+                }
+                mT = cur;
+            }
+            cur = next;
+        }
 
-	public static Node listPartition2(Node head, int pivot) {
-		Node sH = null; // small head
-		Node sT = null; // small tail
-		Node eH = null; // equal head
-		Node eT = null; // equal tail
-		Node mH = null; // big head
-		Node mT = null; // big tail
-		Node next = null; // save next node
-		// every node distributed to three lists
-		while (head != null) {
-			next = head.next;
-			head.next = null;
-			if (head.value < pivot) {
-				if (sH == null) {
-					sH = head;
-					sT = head;
-				} else {
-					sT.next = head;
-					sT = head;
-				}
-			} else if (head.value == pivot) {
-				if (eH == null) {
-					eH = head;
-					eT = head;
-				} else {
-					eT.next = head;
-					eT = head;
-				}
-			} else {
-				if (mH == null) {
-					mH = head;
-					mT = head;
-				} else {
-					mT.next = head;
-					mT = head;
-				}
-			}
-			head = next;
-		}
-		// small and equal reconnect
-		if (sT != null) { // 如果有小于区域
-			sT.next = eH;
-			eT = eT == null ? sT : eT; // 下一步，谁去连大于区域的头，谁就变成eT
-		}
-		// 上面的if，不管跑了没有，et
-		// all reconnect
-		if (eT != null) { // 如果小于区域和等于区域，不是都没有
-			eT.next = mH;
-		}
-		return sH != null ? sH : (eH != null ? eH : mH);
-	}
+        // 头尾相连，如果等于区域为空，则直接连大于区域
+        if (sT != null) {
+            sT.next = (eH != null) ? eH : mH;
+        }
 
-	public static void printLinkedList(Node node) {
-		System.out.print("Linked List: ");
-		while (node != null) {
-			System.out.print(node.value + " ");
-			node = node.next;
-		}
-		System.out.println();
-	}
+        if (eT != null) {
+            eT.next = mH;
+        }
+        return (sH != null) ? sH : (eH != null) ? eH : mH;
+    }
 
-	public static void main(String[] args) {
-		Node head1 = new Node(7);
-		head1.next = new Node(9);
-		head1.next.next = new Node(1);
-		head1.next.next.next = new Node(8);
-		head1.next.next.next.next = new Node(5);
-		head1.next.next.next.next.next = new Node(2);
-		head1.next.next.next.next.next.next = new Node(5);
-		printLinkedList(head1);
-		// head1 = listPartition1(head1, 4);
-		head1 = listPartition2(head1, 5);
-		printLinkedList(head1);
+    public static boolean checkPartition(Node head) {
+        if (head == null || head.next == null) {
+            return true;
+        }
+        int equalLIndex = -1;
+        int equalRIndex = -1;
+        int size = 0;
+        int i = 0;
+        Node cur = head;
+        while (cur != null) {
+            size++;
+            cur = cur.next;
+        }
+        cur = head;
+        int[] arr = new int[size];
+        for (i = 0; i < arr.length; i++) {
+            arr[i] = cur.value;
+            cur = cur.next;
+        }
 
-	}
+        // 得到等于零的区域
+        for (i = 0; i < arr.length; i++) {
+            if (arr[i] == 0) {
+                if (equalLIndex == -1) {
+                    equalLIndex = i;
+                }
+                equalRIndex = i;
+            }
+        }
 
+
+        // 如果没有等于零的
+        if (equalLIndex == -1) {
+            i = 0;
+            // 得到第一个大于零的索引
+            while (arr[i] < 0 && i < arr.length - 1) {
+                i++;
+            }
+            // 左右都等于大于零的一个索引
+            equalLIndex = equalRIndex = i;
+            // 如果全是负数的情况
+            if (i == arr.length - 1) {
+                return true;
+            }
+
+        }
+
+        // 到这里意味着数组里必然存在大于零的区域和小于零的区域
+        for (i = 0; i < arr.length; i++) {
+            if (i < equalLIndex && arr[i] >= 0) {
+                return false;
+            }
+            if (i > equalRIndex && arr[i] <= 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        int testTimes = 500000;
+        int maxSize = 100;
+        int maxValue = 100;
+        boolean succeed = true;
+        for (int i = 0; (i < testTimes) && succeed; i++) {
+            Node[] arr = Tools.generateRandomNodeArray(maxSize, maxValue);
+            Node[] copyArr = Tools.copyNodeArray(arr);
+            Node head1 = Tools.createNodes(arr);
+            Node head2 = Tools.createNodes(copyArr);
+//            System.out.println("===============");
+//            Tools.printAllNodes(head1);
+//            Tools.printAllNodes(head2);
+            Node res1 = listPartition1(head1, 0);
+            Node res2 = listPartition2(head2, 0);
+
+            if (!(checkPartition(res1) && checkPartition(res2))) {
+                succeed = false;
+                Tools.printAllNodes(res1);
+                Tools.printAllNodes(res2);
+            }
+        }
+        System.out.println(succeed ? "Nice" : "F");
+    }
 }

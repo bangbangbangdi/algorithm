@@ -1,129 +1,118 @@
 package myClass06;
 
+
 import java.util.HashMap;
 
 public class Code04_CopyListWithRandom {
+    public static class Node {
+        private int value;
+        private Node next;
+        private Node random;
 
-	public static class Node {
-		public int value;
-		public Node next;
-		public Node rand;
+        public Node(int v) {
+            value = v;
+        }
+    }
 
-		public Node(int data) {
-			this.value = data;
-		}
-	}
+    public static Node copyListWithRand1(Node head) {
+        HashMap<Node, Node> map = new HashMap<>();
+        Node cur = head;
+        while (cur != null) {
+            map.put(cur, new Node(cur.value));
+            cur = cur.next;
+        }
+        cur = head;
+        while (cur != null) {
+            map.get(cur).next = map.get(cur.next);
+            map.get(cur).random = map.get(cur.random);
+            cur = cur.next;
+        }
+        return map.get(head);
+    }
 
-	public static Node copyListWithRand1(Node head) {
-		HashMap<Node, Node> map = new HashMap<Node, Node>();
-		Node cur = head;
-		while (cur != null) {
-			map.put(cur, new Node(cur.value));
-			cur = cur.next;
-		}
-		cur = head;
-		while (cur != null) {
-			// cur 老
-			// map.get(cur) 新
-			map.get(cur).next = map.get(cur.next);
-			map.get(cur).rand = map.get(cur.rand);
-			cur = cur.next;
-		}
-		return map.get(head);
-	}
+    public static Node copyListWithRand2(Node head) {
+        if (head == null) {
+            return head;
+        }
+        Node cur = head;
+        Node next = null;
+        Node copyNode = null;
+        while (cur != null) {
+            next = cur.next;
 
-	public static Node copyListWithRand2(Node head) {
-		if (head == null) {
-			return null;
-		}
-		Node cur = head;
-		Node next = null;
-		// copy node and link to every node
-		// 1 -> 2
-		// 1 -> 1' -> 2
-		while (cur != null) {
-			// cur 老
-			next = cur.next;
-			cur.next = new Node(cur.value);
-			cur.next.next = next;
-			cur = next;
-		}
-		cur = head;
-		Node curCopy = null;
-		// set copy node rand
-		// 1 -> 1' -> 2 -> 2'
-		while (cur != null) {
-			// cur 老
-			// cur.next  新 copy
-			next = cur.next.next;
-			curCopy = cur.next;
-			curCopy.rand = cur.rand != null ? cur.rand.next : null;
-			cur = next;
-		}
-		Node res = head.next;
-		cur = head;
-		// split
-		while (cur != null) {
-			next = cur.next.next;
-			curCopy = cur.next;
-			cur.next = next;
-			curCopy.next = next != null ? next.next : null;
-			cur = next;
-		}
-		return res;
-	}
+            copyNode = new Node(cur.value);
+            cur.next = copyNode;
+            copyNode.next = next;
 
-	public static void printRandLinkedList(Node head) {
-		Node cur = head;
-		System.out.print("order: ");
-		while (cur != null) {
-			System.out.print(cur.value + " ");
-			cur = cur.next;
-		}
-		System.out.println();
-		cur = head;
-		System.out.print("rand:  ");
-		while (cur != null) {
-			System.out.print(cur.rand == null ? "- " : cur.rand.value + " ");
-			cur = cur.next;
-		}
-		System.out.println();
-	}
+            cur = next;
+        }
+        cur = head;
+        while (cur != null) {
+            copyNode = cur.next;
+            next = cur.next.next;
 
-	public static void main(String[] args) {
-		Node head = null;
-		Node res1 = null;
-		Node res2 = null;
-		printRandLinkedList(head);
-		res1 = copyListWithRand1(head);
-		printRandLinkedList(res1);
-		res2 = copyListWithRand2(head);
-		printRandLinkedList(res2);
-		printRandLinkedList(head);
-		System.out.println("=========================");
+            // 考虑random可能为空的情况
+            if (cur.random != null) {
+                copyNode.random = cur.random.next;
+            } else {
+                copyNode.random = null;
+            }
 
-		head = new Node(1);
-		head.next = new Node(2);
-		head.next.next = new Node(3);
-		head.next.next.next = new Node(4);
-		head.next.next.next.next = new Node(5);
-		head.next.next.next.next.next = new Node(6);
+            cur = next;
+        }
 
-		head.rand = head.next.next.next.next.next; // 1 -> 6
-		head.next.rand = head.next.next.next.next.next; // 2 -> 6
-		head.next.next.rand = head.next.next.next.next; // 3 -> 5
-		head.next.next.next.rand = head.next.next; // 4 -> 3
-		head.next.next.next.next.rand = null; // 5 -> null
-		head.next.next.next.next.next.rand = head.next.next.next; // 6 -> 4
+        cur = head;
+        copyNode = head.next;
+        while (cur.next != null) {
+            next = cur.next;
 
-		printRandLinkedList(head);
-		res1 = copyListWithRand1(head);
-		printRandLinkedList(res1);
-		res2 = copyListWithRand2(head);
-		printRandLinkedList(res2);
-		printRandLinkedList(head);
-		System.out.println("=========================");
+            cur.next = cur.next.next;
 
-	}
+            cur = next;
+        }
+        return copyNode;
+    }
 
+    public static void printNodeWhitRand(Node head) {
+        while (head != null) {
+            System.out.print("|v:" + head.value + " r:" + (head.random == null ? "null" : head.random.value));
+            head = head.next;
+        }
+        System.out.println();
+    }
+
+    public static Node generateNodeWithRand(int maxSize, int maxValue) {
+        Node[] arr = new Node[(int) ((maxSize + 1) * Math.random())];
+        int i = 0;
+        for (i = 0; i < arr.length; i++) {
+            arr[i] = new Node((int) ((maxValue + 1) * Math.random()));
+        }
+        for (i = 1; i < arr.length; i++) {
+            arr[i - 1].next = arr[i];
+            arr[i - 1].random = arr[(int) (arr.length * Math.random())];
+        }
+
+        return arr[0];
+    }
+
+    public static void main(String[] args) {
+//        Node node1 = new Node(1);
+//        Node node2 = new Node(2);
+//        node1.next = node2;
+//        node1.random = node2;
+//        node2.next = null;
+//        node2.random = node1;
+//        Node res1 = copyListWithRand1(node1);
+//        Node res2 = copyListWithRand2(node1);
+//        printNodeWhitRand(node1);
+//        printNodeWhitRand(res1);
+//        printNodeWhitRand(res2);
+//        System.out.println("==========");
+        Node randNode = generateNodeWithRand(10, 10);
+        Node res1 = copyListWithRand1(randNode);
+        Node res2 = copyListWithRand2(randNode);
+        printNodeWhitRand(randNode);
+        printNodeWhitRand(res1);
+        printNodeWhitRand(res2);
+    }
 }

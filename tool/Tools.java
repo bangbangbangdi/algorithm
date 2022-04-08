@@ -1,8 +1,211 @@
 package tool;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Tools {
+
+    public static void printBinaryTree(BtNode head) {
+        if (head == null) {
+            return;
+        }
+        int length = 10;
+        printBTProcess(head, length, "Head", 0);
+    }
+
+    public static void printBTProcess(BtNode head, int length, String to, int level) {
+        if (head == null) {
+            return;
+        }
+        printBTProcess(head.right, length, "v", level + 1);
+        String str = String.valueOf(head.value);
+        str = to + str + to;
+        int leftSpace = (length - str.length()) >> 1;
+        int rightSpace = length - str.length() - leftSpace;
+        leftSpace = leftSpace + (length * level);
+        str = getSpace(leftSpace) + str + getSpace(rightSpace);
+        System.out.println(str);
+        printBTProcess(head.left, length, "^", level + 1);
+    }
+
+    public static String getSpace(int num) {
+        if (num < 1) {
+            return "";
+        }
+        StringBuffer buf = new StringBuffer();
+        for (int i = 0; i < num; i++) {
+            buf.append(" ");
+        }
+        return buf.toString();
+    }
+
+    public static BtNode generateRandomBST(int maxLevel, int maxValue) {
+        return generate(1, maxLevel, maxValue);
+    }
+
+    public static BtNode generate(int level, int maxLevel, int maxValue) {
+        if (level > maxLevel || Math.random() > 0.7) {
+            return null;
+        }
+        BtNode head = new BtNode((int) ((maxValue + 1) * Math.random() - (maxValue + 1) * Math.random()));
+        head.left = generate(level + 1, maxLevel, maxValue);
+        head.right = generate(level + 1, maxLevel, maxValue);
+        return head;
+    }
+
+    public static boolean isSameValueStructure(BtNode head1, BtNode head2) {
+        if (head1 == null && head2 == null) {
+            return true;
+        }
+        if (head1 != null && head2 == null) {
+            return false;
+        }
+        if (head1 == null && head2 != null) {
+            return false;
+        }
+        if (head1.value != head2.value) {
+            return false;
+        }
+        return isSameValueStructure(head1.left, head2.left) && isSameValueStructure(head1.right, head2.right);
+    }
+
+
+    public static BtNode createSimpleBtNode() {
+        BtNode btNode1 = new BtNode(1);
+        BtNode btNode2 = new BtNode(2);
+        BtNode btNode3 = new BtNode(3);
+        BtNode btNode4 = new BtNode(4);
+        BtNode btNode5 = new BtNode(5);
+        BtNode btNode6 = new BtNode(6);
+        BtNode btNode7 = new BtNode(7);
+
+        btNode1.left = btNode2;
+        btNode1.right = btNode3;
+        btNode2.left = btNode4;
+        btNode2.right = btNode5;
+        btNode3.left = btNode6;
+        btNode3.right = btNode7;
+        return btNode1;
+    }
+
+    public static BtNode createSimpleBtNode(boolean isBST) {
+        BtNode btNode1 = new BtNode(4);
+        BtNode btNode2 = new BtNode(2);
+        BtNode btNode3 = new BtNode(6);
+        BtNode btNode4 = new BtNode(1);
+        BtNode btNode5 = new BtNode(3);
+        BtNode btNode6 = new BtNode(5);
+        BtNode btNode7 = new BtNode(7);
+
+        btNode1.left = btNode2;
+        btNode1.right = btNode3;
+        btNode2.left = btNode4;
+        btNode2.right = btNode5;
+        btNode3.left = btNode6;
+        btNode3.right = btNode7;
+        return btNode1;
+    }
+
+    public static void printAllBtNode(BtNode head) {
+        if (head == null) {
+            System.out.print("null" + " ");
+            return;
+        }
+        System.out.print(head.value + " ");
+        printAllBtNode(head.left);
+        printAllBtNode(head.right);
+    }
+
+    public static void printBtNode(BtNode head) {
+
+    }
+
+    public static void printAllNodes(ArrayList<Node> arr) {
+        for (Node cur : arr) {
+            System.out.print(cur.value + "-");
+        }
+        System.out.println();
+    }
+
+    public static void printAllNodes(Node[] arr) {
+//        System.out.println("arrSize:" + arr.length);
+        for (Node cur : arr) {
+            System.out.print(cur.value + " ");
+        }
+        System.out.println();
+    }
+
+    public static void printAllNodes(Node head) {
+        if (head == null) {
+            return;
+        }
+        Node cur = head;
+        while (cur.next != null) {
+            System.out.print(cur.value + " ");
+            cur = cur.next;
+        }
+        System.out.print(cur.value + " ");
+        System.out.println();
+    }
+
+    public static void addNodes(Node head, Node[] arr) {
+        if (head == null || arr == null) {
+            return;
+        }
+        Node tail =  head;
+        while (tail.next != null) {
+            tail = tail.next;
+        }
+        for (int i = 0; i < arr.length; i++) {
+            tail.next = arr[i];
+            tail = tail.next;
+        }
+    }
+
+    public static Node createNodes(Node[] arr) {
+        if (arr == null || arr.length < 1) {
+            return null;
+        }
+        Node head = arr[0];
+        Node cur = head;
+        for (int i = 1; i < arr.length; i++) {
+            cur.next = arr[i];
+            cur = cur.next;
+        }
+        return head;
+    }
+
+    public static Node createNodes(int[] arr) {
+        if (arr == null) {
+            return null;
+        }
+        Node[] nodeArr = new Node[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            nodeArr[i] = new Node(arr[i]);
+        }
+        for (int i = 1; i < nodeArr.length; i++) {
+            nodeArr[i - 1].next = nodeArr[i];
+        }
+        return nodeArr[0];
+    }
+
+    public static Node[] generateRandomNodeArray(int maxSize, int maxValue) {
+        Node[] arr = new Node[(int) ((maxSize + 1) * Math.random())];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = new Node((int) ((maxValue + 1) * Math.random()) - (int) ((maxValue + 1) * Math.random()));
+        }
+        return arr;
+    }
+
+    public static Node[] copyNodeArray(Node[] arr) {
+        Node[] nodes = new Node[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            nodes[i] = new Node(arr[i].value);
+        }
+        return nodes;
+    }
+
+
     public static int[] generateRandomArray(int maxSize, int maxValue) {
         int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
         for (int i = 0; i < arr.length; i++) {
@@ -11,14 +214,14 @@ public class Tools {
         return arr;
     }
 
-    public static int[] generateRandomArray(int maxSize, int maxValue,boolean isContainNegative) {
+    public static int[] generateRandomArray(int maxSize, int maxValue, boolean isContainNegative) {
         int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
-        if (isContainNegative){
+        if (isContainNegative) {
             for (int i = 0; i < arr.length; i++) {
                 arr[i] = (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
             }
             return arr;
-        }else{
+        } else {
             for (int i = 0; i < arr.length; i++) {
                 arr[i] = (int) ((maxValue + 1) * Math.random());
             }
@@ -37,7 +240,7 @@ public class Tools {
     }
 
     public static void printStringArray(String[] str) {
-        if (str == null){
+        if (str == null) {
             return;
         }
         for (int i = 0; i < str.length; i++) {
