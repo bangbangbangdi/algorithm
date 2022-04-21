@@ -39,6 +39,29 @@ public class Tools {
         return buf.toString();
     }
 
+    public static void in(BtNode head, ArrayList<BtNode> arr) {
+        if (head == null) {
+            return;
+        }
+        arr.add(head);
+        in(head.left, arr);
+        in(head.right, arr);
+    }
+
+    public static BtNode[] getRandomBTAndAB(int maxLevel, int maxValue) {
+        BtNode head = generateRandomBST(maxLevel, maxValue);
+        if (head == null) {
+            return null;
+        }
+        BtNode a = null;
+        BtNode b = null;
+        ArrayList<BtNode> arr = new ArrayList<>();
+        Tools.in(head, arr);
+        a = arr.get((int) (Math.random() * arr.size()));
+        b = arr.get((int) (Math.random() * arr.size()));
+        return new BtNode[]{head, a, b};
+    }
+
     public static BtNode generateRandomBST(int maxLevel, int maxValue) {
         return generate(1, maxLevel, maxValue);
     }
@@ -152,7 +175,7 @@ public class Tools {
         if (head == null || arr == null) {
             return;
         }
-        Node tail =  head;
+        Node tail = head;
         while (tail.next != null) {
             tail = tail.next;
         }
