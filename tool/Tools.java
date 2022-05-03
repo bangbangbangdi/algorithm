@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Tools {
+    public static int sum(int[] arr){
+        return Arrays.stream(arr).parallel().reduce(0,Integer::sum);
+    }
 
     public static void printBinaryTree(BtNode head) {
         if (head == null) {

@@ -1,6 +1,6 @@
 package class12;
 
-public class Code05_PalindromeSubsequence {
+public class Code05_LongestCommonSubsequence {
 
 	public static int lcse(char[] str1, char[] str2) {
 		int[][] dp = new int[str1.length][str2.length];

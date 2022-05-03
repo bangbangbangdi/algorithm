@@ -129,4 +129,11 @@ public class Code02_StickersToSpellWord {
 		return ans;
 	}
 
+	public static void main(String[] args) {
+		String str = "aabbcccccddddeeee";
+		String[] strArr = {"abb","ccdd","ddee"};
+		System.out.println(minStickers1(strArr, str));
+		System.out.println(minStickers2(strArr, str));
+	}
+
 }
