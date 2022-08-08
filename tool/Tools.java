@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Tools {
-    public static int sum(int[] arr){
-        return Arrays.stream(arr).parallel().reduce(0,Integer::sum);
+    public static int sum(int[] arr) {
+        return Arrays.stream(arr).parallel().reduce(0, Integer::sum);
     }
 
     public static void printBinaryTree(BtNode head) {
@@ -319,6 +319,14 @@ public class Tools {
 
     public static int getRandomInt(int maxValue) {
         return (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
+    }
+
+    public static int getRandomInt(int maxValue, boolean isContainNegative) {
+        if (isContainNegative) {
+            return getRandomInt(maxValue);
+        }else{
+            return (int) ((maxValue + 1) * Math.random());
+        }
     }
 
     public static String generateRandomString(int strLen) {
