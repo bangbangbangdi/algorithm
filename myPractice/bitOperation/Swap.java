@@ -3,7 +3,7 @@ package myPractice.bitOperation;
 import tool.Tools;
 
 // 不用中间变量交换两个数
-public class swap {
+public class Swap {
     public static void swap(int[] arr, int i, int j) {
         if (arr == null || arr.length == 0 || arr[i] == arr[j]) {
             return;
