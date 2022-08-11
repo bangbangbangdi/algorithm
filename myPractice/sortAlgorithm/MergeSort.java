@@ -2,6 +2,8 @@ package myPractice.sortAlgorithm;
 
 import tool.Tools;
 
+import java.util.Arrays;
+
 public class MergeSort {
 
     public static void merge(int[] arr, int L, int R, int M) {
@@ -18,18 +20,17 @@ public class MergeSort {
         while (p2 <= R) {
             help[i++] = arr[p2++];
         }
-
         i = 0;
-        while (L <= R) {
+        while (i < help.length) {
             arr[L++] = help[i++];
         }
     }
 
     public static void process(int[] arr, int L, int R) {
-        if (L >= R || arr.length == 1) {
+        if (L == R) {
             return;
         }
-        int M = L + (R - L >> 1);
+        int M = L + ((R - L) >> 1);
         process(arr, L, M);
         process(arr, M + 1, R);
         merge(arr, L, R, M);
@@ -42,10 +43,57 @@ public class MergeSort {
         process(arr, 0, arr.length - 1);
     }
 
+    public static void mergeSort2(int[] arr) {
+        if (arr == null || arr.length < 2) {
+            return;
+        }
+        int N = arr.length;
+        int mergeSize = 1;
+        while(mergeSize < N){
+            int L = 0;
+            while(L < N){
+                int M = L + mergeSize - 1;
+                if (M>=N){
+                    break;
+                }
+                int R = Math.min(M+mergeSize,N-1);
+                merge(arr,L,R,M);
+                L = R + 1;
+            }
+
+            if (mergeSize>N/2){
+                break;
+            }
+            mergeSize <<= 1;
+        }
+    }
+
+
+    public static void test() {
+        int testTime = 1000000;
+        int maxSize = 100;
+        int maxValue = 100;
+        boolean succeed = true;
+        for (int i = 0; i < testTime && succeed; i++) {
+            int[] arr = Tools.generateRandomArray(maxSize, maxValue);
+            int[] copyArr = Tools.copyArr(arr);
+            mergeSort2(arr);
+            Arrays.sort(copyArr);
+            succeed = Tools.isEqual(arr, copyArr);
+            if (!succeed) {
+                System.out.println("mergeSort");
+                Tools.printArray(arr);
+                System.out.println("comparator");
+                Tools.printArray(copyArr);
+            }
+        }
+        System.out.println(succeed ? "Nice" : "Fuck");
+    }
 
     public static void main(String[] args) {
-        int[] arr = Tools.generateRandomArray(10, 10);
-        mergeSort(arr);
-        Tools.printArray(arr);
+//        int[] arr = {12, 3, 4, 1};
+//        mergeSort2(arr);
+//        Tools.printArray(arr);
+        test();
     }
 }
