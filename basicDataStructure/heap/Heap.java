@@ -8,8 +8,8 @@ public class Heap {
 
     public static class MyHeap {
         private int[] myHeap;
+        private int limit;
         private int heapSize;
-        private final int limit;
 
         public MyHeap(int limit) {
             myHeap = new int[limit];
@@ -17,54 +17,50 @@ public class Heap {
         }
 
         public boolean isFull() {
-            return limit == heapSize;
+            return heapSize == limit;
         }
 
         public boolean isEmpty() {
             return heapSize == 0;
         }
 
-        public void add(int value) {
-            if (isFull()) {
-                throw new RuntimeException("Heap Full");
-            }
-            heapInsert(value);
-//            Tools.printArray(myHeap);
-        }
-
-        public int pop() {
-            if (isEmpty()) {
-                throw new RuntimeException("Heap Empty");
-            }
-            int ans = myHeap[0];
-            Tools.swap(myHeap, 0, --heapSize);
-            heapify();
-//            Tools.printArray(myHeap);
-            return ans;
-        }
-
-        private void heapInsert(int value) {
-            int index = heapSize;
-            myHeap[heapSize++] = value;
-            while (myHeap[index] > myHeap[(index - 1) / 2]) {
-                Tools.swap(myHeap, index, (index - 1) / 2);
+        private void heapInsert(int[] arr, int index) {
+            while (arr[index] > arr[(index - 1) / 2]) {
+                Tools.swap(arr, index, (index - 1) / 2);
                 index = (index - 1) / 2;
             }
         }
 
-        private void heapify() {
-            int index = 0;
-            int leftIndex = 1 < heapSize ? 1 : 0;
+        private void heapify(int[] arr, int index, int heapSize) {
+            int leftIndex = index * 2 + 1;
             while (leftIndex < heapSize) {
-                int largestIndex = leftIndex + 1 < heapSize && myHeap[leftIndex] < myHeap[leftIndex + 1] ? leftIndex + 1 : leftIndex;
-                largestIndex = myHeap[index] < myHeap[largestIndex] ? largestIndex : index;
-                if (index == largestIndex) {
+                int largestIndex = leftIndex + 1 < heapSize && arr[leftIndex] < arr[leftIndex + 1] ? leftIndex + 1 : leftIndex;
+                largestIndex = arr[index] < arr[largestIndex] ? largestIndex : index;
+                if (largestIndex == index) {
                     break;
                 }
-                Tools.swap(myHeap, index, largestIndex);
+                Tools.swap(arr,index,largestIndex);
                 index = largestIndex;
-                leftIndex = 2 * index + 1;
+                leftIndex = index * 2 + 1;
             }
+        }
+
+        public void push(int value) {
+            if (isFull()) {
+                throw new RuntimeException("Heap Full");
+            }
+            myHeap[heapSize] = value;
+            heapInsert(myHeap, heapSize++);
+        }
+
+        public int pop() {
+            if (isEmpty()){
+                throw new RuntimeException("Heap Empty");
+            }
+            int ans = myHeap[0];
+            Tools.swap(myHeap,--heapSize,0);
+            heapify(myHeap,0,heapSize);
+            return ans;
         }
     }
 
@@ -118,18 +114,15 @@ public class Heap {
             Arrays.sort(copyArr);
             MyHeap myHeap = new MyHeap(maxSize);
             RightHeap rightHeap = new RightHeap(maxSize);
-//            Tools.printArray(arr);
             for (int k : arr) {
                 if (!myHeap.isEmpty() && Math.random() < 0.5) {
                     int myPop = myHeap.pop();
                     int rightPop = rightHeap.pop();
-//                    System.out.println("my:" + myPop + " r:" + rightPop);
                     if (myPop != rightPop) {
                         succeed = false;
                     }
                 } else {
-//                    System.out.println("add " + k);
-                    myHeap.add(k);
+                    myHeap.push(k);
                     rightHeap.add(k);
                 }
             }
@@ -139,16 +132,6 @@ public class Heap {
 
     public static void main(String[] args) {
         test();
-//        int[] arr = {38, 27, 27, -59, -52, -21, -70, -78};
-//        MyHeap heap = new MyHeap(15);
-//        for (int i = 0; i < arr.length; i++) {
-//            heap.add(arr[i]);
-//        }
-
-//        System.out.println("pop " + heap.pop());
-//        while (!heap.isEmpty()) {
-//            System.out.println("pop " + heap.pop());
-//        }
     }
 
 }
