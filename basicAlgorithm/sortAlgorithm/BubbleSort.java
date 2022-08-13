@@ -1,4 +1,4 @@
-package myPractice.sortAlgorithm;
+package basicAlgorithm.sortAlgorithm;
 
 import tool.Tools;
 

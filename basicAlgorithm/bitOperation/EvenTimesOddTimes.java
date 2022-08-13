@@ -1,11 +1,8 @@
-package myPractice.bitOperation;
-
-import tool.Tools;
+package basicAlgorithm.bitOperation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 // 数组中有一个数出现了奇数次，其余都出现了偶数次，请找出这种数

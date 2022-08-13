@@ -1,4 +1,4 @@
-package myPractice.bitOperation;
+package basicAlgorithm.bitOperation;
 
 import tool.Tools;
 

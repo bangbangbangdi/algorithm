@@ -1,6 +1,5 @@
-package myPractice.sortAlgorithm;
+package basicAlgorithm.sortAlgorithm;
 
-import com.sun.scenario.effect.impl.sw.java.JSWColorAdjustPeer;
 import tool.Tools;
 
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package myPractice.bitOperation;
+package basicAlgorithm.bitOperation;
 // 请打印一个int的二进制格式
 public class PrintBinaryCode {
 

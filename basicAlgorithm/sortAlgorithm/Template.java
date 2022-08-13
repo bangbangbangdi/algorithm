@@ -1,4 +1,4 @@
-package myPractice.sortAlgorithm;
+package basicAlgorithm.sortAlgorithm;
 
 public class Template {
     public static void test() {
