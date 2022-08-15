@@ -64,13 +64,6 @@ public class BSNearLeft {
     }
 
     public static void main(String[] args) {
-//        int[] arr = Tools.generateRandomArray(10, 10);
-//        int random = Tools.getRandomInt(10);
-//        Arrays.sort(arr);
-//        Tools.printArray(arr);
-//        System.out.println(random);
-//
-//        System.out.println(BSNearLeft(arr, random));
         test();
     }
 
