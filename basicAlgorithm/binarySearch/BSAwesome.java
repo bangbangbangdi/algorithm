@@ -4,6 +4,8 @@ import tool.Tools;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
 
 public class BSAwesome {
 
@@ -21,16 +23,16 @@ public class BSAwesome {
         if (arr[R] < arr[R - 1]) {
             return R;
         }
-        while (L < R) {
+        L = 1;
+        R = R - 1;
+        while (L <= R) {
             mid = L + ((R - L) >> 1);
-            if (mid == L && arr[L] < arr[L + 1]) {
-                return mid;
-            } else if (arr[mid] < arr[mid - 1] && arr[mid] < arr[mid + 1]) {
-                return mid;
-            } else if (arr[mid] < arr[mid - 1] && arr[mid] > arr[mid + 1]) {
+            if (arr[mid] > arr[mid - 1]) {
+                R = mid - 1;
+            } else if (arr[mid] > arr[mid + 1]) {
                 L = mid + 1;
             } else {
-                R = mid - 1;
+                return mid;
             }
         }
         return -1;
@@ -64,15 +66,32 @@ public class BSAwesome {
         return ans;
     }
 
+    public static int[] generateRandomArray(int maxSize, int maxValue) {
+        int size = (int) ((maxSize + 1) * Math.random());
+        int[] arr = new int[size]; // 长度随机
+        HashSet set = new HashSet();
+        while (true) {
+            if (set.size() == size) {
+                break;
+            }
+            set.add((int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random()));
+        }
+        Iterator iterator = set.iterator();
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = (int) iterator.next();
+        }
+        return arr;
+    }
+
     public static void test() {
         int testTime = 1000000;
-        int maxSize = 10;
+        int maxSize = 100;
         int maxValue = 100;
         boolean succeed = true;
         for (int i = 0; i < testTime && succeed; i++) {
-            int[] arr = Tools.generateRandomArray(maxSize, maxValue);
-            int randomInt = Tools.getRandomInt(maxValue);
+            int[] arr = generateRandomArray(maxSize, maxValue);
 //            Tools.printArray(arr);
+//            System.out.println("getLessIndex " + getLessIndex(arr));
             if (!comparator(arr).contains(getLessIndex(arr))) {
                 succeed = false;
                 Tools.printArray(arr);
@@ -88,7 +107,8 @@ public class BSAwesome {
 
     public static void main(String[] args) {
         test();
-//        int[] arr = {44,2,59,-2,-64,-44,-25,-29,11};
+//        int[] arr = {-24,-24,-17,-47,80};
+//        System.out.println(getLessIndex(arr));
 //        ArrayList<Integer> comparator = comparator(arr);
 //        comparator.forEach(System.out::println);
     }
