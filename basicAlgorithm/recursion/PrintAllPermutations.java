@@ -1,5 +1,6 @@
 package basicAlgorithm.recursion;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,11 +23,15 @@ public class PrintAllPermutations {
         }
         for (int i = index; i < chars.length; i++) {
             swap(chars, index, i);
-            process(set, chars, index + 1, path + chars[i]);
+            process(set, chars, index + 1, path + chars[index]);
+            swap(chars, index, i);
         }
     }
 
     public static void swap(char[] chars, int a, int b) {
+        if (a == b) {
+            return;
+        }
         char tem = chars[a];
         chars[a] = chars[b];
         chars[b] = tem;
@@ -34,6 +39,6 @@ public class PrintAllPermutations {
 
 
     public static void main(String[] args) {
-        printAllPermutations("abc");
+        printAllPermutations("aab");
     }
 }
