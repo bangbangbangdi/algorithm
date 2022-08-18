@@ -39,18 +39,16 @@ public class Knapsack {
 
     public static int dpWays(int[] w, int[] v, int rest, int index) {
         int N = w.length;
-        int[][] arr = new int[N + 1][rest+1];
+        int[][] dp = new int[N + 1][rest + 1];
         for (int i = N - 1; i >= 0; i--) {
             for (int j = rest; j >= 0; j--) {
-                int res1 = arr[i + 1][j];
-                int res2 = Integer.MIN_VALUE;
+                dp[i][j] = dp[i + 1][j];
                 if (j >= w[i]) {
-                    res2 = v[i] + arr[i + 1][j - w[i]];
+                    dp[i][j] = Math.max(dp[i][j], v[i] + dp[i + 1][j - w[i]]);
                 }
-                arr[i][j] = Math.max(res1, res2);
             }
         }
-        return arr[0][rest];
+        return dp[0][rest];
     }
 
     public static void main(String[] args) {
