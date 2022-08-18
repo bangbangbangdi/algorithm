@@ -31,8 +31,28 @@ public class ConvertToLetterString {
         return ans;
     }
 
+    public static int dpWays(String str) {
+        if (str == null || str.length() < 1) {
+            return 0;
+        }
+        int N = str.length();
+        char[] chars = str.toCharArray();
+        int[] arr = new int[N +2];
+        arr[N] = 1;
+        for (int i = N - 1; i >= 0; i--) {
+            if (chars[i] - 48 == 1 || (chars[i] == 2 && i + 1 < chars.length && chars[i + 1] - 48 <= 6)){
+                arr[i] = arr[i+1] + arr[i+2];
+            }else{
+                arr[i] = arr[i+1];
+            }
+        }
+
+        return arr[0];
+    }
+
     public static void main(String[] args) {
-        System.out.println(number("777"));
+        System.out.println(number("1111"));
+        System.out.println(dpWays("1111"));
     }
 
 }
