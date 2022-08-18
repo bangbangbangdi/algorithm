@@ -40,7 +40,7 @@ public class Code08_CardsInLine {
 	}
 
 	public static void main(String[] args) {
-		int[] arr = { 1, 9, 1 };
+		int[] arr = {16,65,-39,-81,-39,-62,4,4,54,-65,-6,-2,2,25,69,7,-54,26,-8,21,15,-10,-13,1,-68,-57,9,-59,2,26,41};
 		System.out.println(win1(arr));
 		System.out.println(win2(arr));
 
