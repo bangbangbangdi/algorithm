@@ -46,8 +46,9 @@ public class CardsInLine {
             for (int j = 0; j < N - i; j++) {
                 if (i == 0){
                     firstDp[j][j] = arr[j];
+                }else{
+                    firstDp[i+j][j] = Math.max(arr[i+j]+defensiveDp[i+j+1][j],arr[j]+defensiveDp[i+j][j-1]);
                 }
-
             }
         }
 
