@@ -35,29 +35,33 @@ public class CardsInLine {
         if (arr == null || arr.length < 1) {
             return 0;
         }
-        return 1;
+        return dpWays(arr);
     }
 
     public static int dpWays(int[] arr) {
         int N = arr.length;
         int[][] firstDp = new int[N][N];
         int[][] defensiveDp = new int[N][N];
+        // i --> R
         for (int i = 0; i < N; i++) {
+            // j --> L
             for (int j = 0; j < N - i; j++) {
-                if (i == 0){
+                if (i == 0) {
                     firstDp[j][j] = arr[j];
-                }else{
-                    firstDp[i+j][j] = Math.max(arr[i+j]+defensiveDp[i+j+1][j],arr[j]+defensiveDp[i+j][j-1]);
+                } else {
+                    firstDp[i + j][j] = Math.max(arr[j] + defensiveDp[i + j][j + 1], arr[i + j] + defensiveDp[i + j - 1][j]);
+                    defensiveDp[i + j][j] = Math.min(firstDp[j][i + j - 1], firstDp[j + 1][i + j]);
                 }
             }
         }
 
-        return Math.max(firstDp[0][N - 1], defensiveDp[0][N - 1]);
+        return Math.max(firstDp[N - 1][0], defensiveDp[N-1][0]);
     }
 
     public static void main(String[] args) {
-        int[] arr = {16, 65, -39, -81, -39, -62, 4, 4, 54, -65, -6, -2, 2, 25, 69, 7, -54, 26, -8, 21, 15, -10, -13, 1, -68, -57, 9, -59, 2, 26, 41};
+        int[] arr = {16, 65, -39, -81, -39, -62, 4, 4, 54, -65, -6, -2, -54, 26, -8, 21, 15, -10, -13, 1, -68, -57, 9, -59, 2, 26, 41};
         System.out.println(win1(arr));
+        System.out.println(win2(arr));
 //        int[] arr = Tools.generateRandomArray(100, 100);
 //        Tools.printArray(arr);
     }
