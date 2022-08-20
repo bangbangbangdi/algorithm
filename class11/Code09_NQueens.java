@@ -79,7 +79,7 @@ public class Code09_NQueens {
 	}
 
 	public static void main(String[] args) {
-		int n = 14;
+		int n = 5;
 
 		long start = System.currentTimeMillis();
 		System.out.println(num2(n));
