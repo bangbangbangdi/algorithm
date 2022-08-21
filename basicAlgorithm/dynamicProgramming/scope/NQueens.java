@@ -1,37 +1,31 @@
 package basicAlgorithm.dynamicProgramming.scope;
 
 public class NQueens {
-
-    public static int getNQueen(int N) {
-        if (N < 1) {
+    public static int getNQueens(int N){
+        if (N < 1){
             return -1;
         }
-        int[] arr = new int[N];
-        return process(arr, 0);
+        int[] record = new int[N];
+        return process(record, 0);
     }
 
-    public static int process(int[] arr, int index) {
-        if (index == arr.length) {
+    public static int process(int[] record,int index){
+        if (index == record.length){
             return 1;
         }
         int res = 0;
-        for (int i = 0; i < arr.length; i++) {
-            arr[index] = i;
-            if (isAvailable(arr, index)) {
-                res += process(arr, index + 1);
+        for (int i = 0; i < record.length; i++) {
+            record[index] = i;
+            if (isValid(record,index)){
+                res += process(record,index+1);
             }
         }
         return res;
     }
 
-    // 只需看到i
-    public static boolean isAvailable(int[] arr, int index) {
+    public static boolean isValid(int[] record,int index){
         for (int i = 0; i < index; i++) {
-            // 列冲突 arr[i] == arr[index]
-            // 斜线冲突 |i-index|/|arr[i]-arr[index]| == 1
-            // 下述写法错在如果遇到4/3这种它也成立
-            // if (arr[index] == arr[i] || Math.abs(i - index) / Math.abs(arr[i] - arr[index]) == 1) {
-            if (arr[index] == arr[i] || Math.abs(i - index)  == Math.abs(arr[i] - arr[index])) {
+            if (record[i] == record[index] || Math.abs(index - i) == Math.abs(record[index] - record[i])){
                 return false;
             }
         }
@@ -39,7 +33,7 @@ public class NQueens {
     }
 
     public static void main(String[] args) {
-        System.out.println(getNQueen(5));
+        int N = 5;
+        System.out.println(getNQueens(N));
     }
-
 }
