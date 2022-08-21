@@ -18,10 +18,7 @@ public class RobotWalk {
 
     public static int process(int N, int M, int K, int P) {
         if (K == 0) {
-            if (M == P) {
-                return 1;
-            }
-            return 0;
+            return M == P ? 1 : 0;
         }
         if (M == 1) {
             return process(N, M + 1, K - 1, P);
@@ -36,17 +33,54 @@ public class RobotWalk {
         if (N < 2 || M < 1 || M > N || K < 0 || P < 1 || P > N) {
             return -1;
         }
+        int[][] dp = new int[K + 1][N + 1];
+        // 初始化缓存
+        dp[0][P] = 1;
 
-        return 1;
+        for (int k = 1; k <= K; k++) {
+            for (int m = 1; m <= N; m++) {
+                if (m == 1) {
+                    dp[k][m] = dp[k - 1][m + 1];
+                } else if (m == N) {
+                    dp[k][m] = dp[k - 1][m - 1];
+                } else {
+                    dp[k][m] = dp[k - 1][m + 1] + dp[k - 1][m - 1];
+                }
+            }
+        }
+        return dp[K][M];
     }
 
-
+    public static int robotWalk3(int N, int M, int K, int P) {
+        if (N < 2 || M < 1 || M > N || K < 0 || P < 1 || P > N) {
+            return -1;
+        }
+        int[] dp = new int[N + 1];
+        dp[P] = 1;
+        for (int k = 1; k <= K; k++) {
+            int leftTop = dp[1];
+            for (int m = 1; m <= N; m++) {
+                int temp = dp[m];
+                if (m == 1) {
+                    dp[m] = dp[m + 1];
+                } else if (m == N) {
+                    dp[m] = leftTop;
+                } else {
+                    dp[m] = dp[m + 1] + leftTop;
+                }
+                leftTop = temp;
+            }
+        }
+        return dp[M];
+    }
 
     public static void main(String[] args) {
-        int N = 4;
-        int M = 3;
-        int K = 2;
-        int P = 2;
+        int N = 7;
+        int M = 4;
+        int K = 9;
+        int P = 5;
         System.out.println(robotWalk(N, M, K, P));
+        System.out.println(robotWalk2(N, M, K, P));
+        System.out.println(robotWalk3(N, M, K, P));
     }
 }
