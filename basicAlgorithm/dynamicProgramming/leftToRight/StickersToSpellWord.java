@@ -16,20 +16,19 @@ public class StickersToSpellWord {
             return -1;
         }
         int N = arr.length;
-        // word frequency
-        int[][] bulletWF = new int[N][26];
         HashMap<String, Integer> dp = new HashMap<>();
+        int[][] bulletWF = new int[N][26];
         for (int i = 0; i < N; i++) {
             char[] chars = arr[i].toCharArray();
-            for (char cha : chars) {
-                bulletWF[i][cha - 'a']++;
+            for (char ch : chars) {
+                bulletWF[i][ch - 'a']++;
             }
         }
         dp.put("", 0);
-        return process(dp, str, bulletWF);
+        return process(dp, bulletWF, str);
     }
 
-    public static int process(HashMap<String, Integer> dp, String str, int[][] bulletWF) {
+    public static int process(HashMap<String, Integer> dp, int[][] bulletWF, String str) {
         if (dp.containsKey(str)) {
             return dp.get(str);
         }
@@ -39,6 +38,7 @@ public class StickersToSpellWord {
         for (char ch : target) {
             targetWF[ch - 'a']++;
         }
+
         for (int i = 0; i < bulletWF.length; i++) {
             if (bulletWF[i][target[0] - 'a'] == 0) {
                 continue;
@@ -52,12 +52,12 @@ public class StickersToSpellWord {
                 }
             }
             String sub = sb.toString();
-            int tem = process(dp, sub, bulletWF);
+            int tem = process(dp, bulletWF, sub);
             if (tem != -1) {
                 ans = Math.min(ans, tem + 1);
             }
         }
-        dp.put(str,ans);
+        dp.put(str, ans == Integer.MAX_VALUE ? -1 : ans);
         return dp.get(str);
     }
 
