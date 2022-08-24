@@ -22,9 +22,13 @@ public class LongestCommonSubsequence {
             return Math.max(chs1[0] == chs2[j] ? 1 : 0, process(chs1, chs2, i, j - 1));
         }
         if (j == 0) {
-            return process(chs1, chs2, i - 1, j);
+            return Math.max(chs2[0] == chs1[i] ? 1 : 0, process(chs1, chs2, i - 1, j));
         }
-        return 1;
+        int ans = Math.max(process(chs1, chs2, i - 1, j), process(chs1, chs2, i, j - 1));
+        if (chs1[i] == chs2[j]) {
+            ans = Math.max(ans, process(chs1, chs2, i - 1, j - 1) + 1);
+        }
+        return ans;
     }
 
     public static int lcs2(String str1, String str2) {
@@ -61,6 +65,7 @@ public class LongestCommonSubsequence {
     public static void main(String[] args) {
         String str1 = "abcd";
         String str2 = "aabbeagasderqwec";
+        System.out.println(lcs(str1, str2));
         System.out.println(lcs2(str1, str2));
     }
 }
