@@ -19,7 +19,7 @@ public class LongestCommonSubsequence {
             return chs1[0] == chs2[0] ? 1 : 0;
         }
         if (i == 0) {
-            return process(chs1, chs2, i, j - 1);
+            return Math.max(chs1[0] == chs2[j] ? 1 : 0, process(chs1, chs2, i, j - 1));
         }
         if (j == 0) {
             return process(chs1, chs2, i - 1, j);
