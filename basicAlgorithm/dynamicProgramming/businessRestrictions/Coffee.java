@@ -7,7 +7,7 @@ package basicAlgorithm.dynamicProgramming.businessRestrictions;
 // int[] arr int a int b
 public class Coffee {
 
-    public static int coffee(int[] arr, int a, int b) {
+    public static int coffee1(int[] arr, int a, int b) {
         if (arr == null || arr.length < 1) {
             return 0;
         }
@@ -19,12 +19,11 @@ public class Coffee {
 
     public static int process(int[] arr, int a, int b, int index, int available) {
         if (index == arr.length - 1) {
-            return Math.min(Math.max(arr[index], available) + a, arr[index] + b);
+            return Math.min(arr[index] + b, Math.max(available, arr[index]) + a);
         }
-        int nextAvailable = Math.max(arr[index], available) + a;
+        int nextAvailable = Math.max(available, arr[index]) + a;
         int nextFinish1 = process(arr, a, b, index + 1, nextAvailable);
         int p1 = Math.max(nextAvailable, nextFinish1);
-
         int dry = arr[index] + b;
         int nextFinish2 = process(arr, a, b, index + 1, available);
         int p2 = Math.max(dry, nextFinish2);
@@ -40,43 +39,36 @@ public class Coffee {
         }
         int N = arr.length;
         int limit = 0;
-        for (int j : arr) {
-            limit = Math.max(j, limit) + a;
+        for (int i = 0; i < N; i++) {
+            limit = Math.max(limit, arr[i]) + a;
         }
         int[][] dp = new int[N][limit + 1];
-        for (int i = 0; i <= limit; i++) {
-            dp[N - 1][i] = Math.min(Math.max(arr[N - 1], i) + a, arr[N - 1] + b);
+        for (int available = 0; available <= limit; available++) {
+            dp[N - 1][available] = Math.min(arr[N - 1] + b, Math.max(available, arr[N - 1]) + a);
         }
         for (int index = N - 2; index >= 0; index--) {
             for (int available = 0; available <= limit; available++) {
-
-//                int nextAvailable = Math.max(arr[index], available) + a;
-//                int nextFinish1 = process(arr, a, b, index + 1, nextAvailable);
-//                int p1 = Math.max(nextAvailable, nextFinish1);
-//
-//                int dry = arr[index] + b;
-//                int nextFinish2 = process(arr, a, b, index + 1, available);
-//                int p2 = Math.max(dry, nextFinish2);
-//                return Math.min(p1, p2);
-
+                int nextAvailable = Math.max(available, arr[index]) + a;
                 int p1 = Integer.MAX_VALUE;
-                if (available + a <= limit) {
-                    p1 = Math.max(dp[index + 1][Math.max(available, arr[index]) + a], Math.max(available, arr[index]) + a);
+                if (nextAvailable <= limit) {
+                    p1 = Math.max(dp[index + 1][nextAvailable], nextAvailable);
                 }
-                int p2 = Math.max(arr[index] + b, dp[index + 1][available]);
+                int dry = arr[index] + b;
+                int nextFinish = dp[index + 1][available];
+                int p2 = Math.max(dry, nextFinish);
                 dp[index][available] = Math.min(p1, p2);
             }
         }
-
         return dp[0][0];
     }
 
+
     public static void main(String[] args) {
-//        int[] arr = {1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 6, 6, 6, 6, 10, 12, 13, 14, 18, 19};
-        int[] arr = {1, 5, 6};
+        int[] arr = {1, 5, 6,6,6,6,7,10,11,11,12};
         int a = 3;
         int b = 5;
-        System.out.println(coffee(arr, a, b));
+        System.out.println(coffee1(arr, a, b));
         System.out.println(coffee2(arr, a, b));
     }
+
 }
