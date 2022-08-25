@@ -38,18 +38,33 @@ public class Coffee {
         if (a >= b) {
             return arr[arr.length - 1] + b;
         }
-        int N = arr.length - 1;
+        int N = arr.length;
         int limit = 0;
         for (int j : arr) {
             limit = Math.max(j, limit) + a;
         }
-        int[][] dp = new int[N][limit];
-        for (int i = 0; i < limit; i++) {
-            dp[N - 1][i] = Math.min(Math.max(arr[N], limit) + a, arr[N] + b);
+        int[][] dp = new int[N][limit + 1];
+        for (int i = 0; i <= limit; i++) {
+            dp[N - 1][i] = Math.min(Math.max(arr[N - 1], i) + a, arr[N - 1] + b);
         }
+        for (int index = N - 2; index >= 0; index--) {
+            for (int available = 0; available <= limit; available++) {
 
-        for (int i = N - 2; i >= 0; i--) {
-            for (int j = 0; j < limit; j++) {
+//                int nextAvailable = Math.max(arr[index], available) + a;
+//                int nextFinish1 = process(arr, a, b, index + 1, nextAvailable);
+//                int p1 = Math.max(nextAvailable, nextFinish1);
+//
+//                int dry = arr[index] + b;
+//                int nextFinish2 = process(arr, a, b, index + 1, available);
+//                int p2 = Math.max(dry, nextFinish2);
+//                return Math.min(p1, p2);
+
+                int p1 = Integer.MAX_VALUE;
+                if (available + a <= limit) {
+                    p1 = Math.max(dp[index + 1][Math.max(available, arr[index]) + a], Math.max(available, arr[index]) + a);
+                }
+                int p2 = Math.max(arr[index] + b, dp[index + 1][available]);
+                dp[index][available] = Math.min(p1, p2);
             }
         }
 
@@ -57,9 +72,11 @@ public class Coffee {
     }
 
     public static void main(String[] args) {
-        int[] arr = {1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 6, 6, 6, 6, 10, 12, 13, 14, 18, 19};
+//        int[] arr = {1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 6, 6, 6, 6, 10, 12, 13, 14, 18, 19};
+        int[] arr = {1, 5, 6};
         int a = 3;
         int b = 5;
         System.out.println(coffee(arr, a, b));
+        System.out.println(coffee2(arr, a, b));
     }
 }
