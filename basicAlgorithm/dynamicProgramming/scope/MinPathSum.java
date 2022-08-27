@@ -24,10 +24,26 @@ public class MinPathSum {
         return Math.min(p1, p2);
     }
 
+    public static int dpWays(int[][] m) {
+        if (m == null || m.length < 1 || m[0] == null || m[0].length < 1) {
+            return 0;
+        }
+        int max = m[0][0];
+        for (int i = 0; i < m.length; i++) {
+            for (int j = 0; j < m[0].length; j++) {
+                max = Math.max(m[i][j],max);
+            }
+        }
+        max = max * (m.length + m[0].length - 1);
+        int[][][] dp = new int[m.length][m[0].length][max];
+        return 1;
+    }
+
     public static void main(String[] args) {
-        int[][] m = { { 1, 3, 5, 9 }, { 8, 1, 3, 4 }, { 5, 0, 6, 1 },
-                { 8, 8, 4, 0 } };
-        System.out.println(min(m));
+//        int[][] m = {{1, 3, 5, 9}, {8, 1, 3, 4}, {5, 0, 6, 1},
+//                {8, 8, 4, 0}};
+//        System.out.println(min(m));
+
     }
 
 }
