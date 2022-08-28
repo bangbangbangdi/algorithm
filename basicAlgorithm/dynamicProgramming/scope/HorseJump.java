@@ -12,15 +12,7 @@ public class HorseJump {
         if (x < 0 || x > 8 || y < 0 || y > 9 || k < 0) {
             return 0;
         }
-        int[][] available = new int[8][2];
-        available[0] = new int[]{2, 1};
-        available[1] = new int[]{2, -1};
-        available[2] = new int[]{-2, 1};
-        available[3] = new int[]{-2, -1};
-        available[4] = new int[]{1, 2};
-        available[5] = new int[]{1, -2};
-        available[6] = new int[]{-1, 2};
-        available[7] = new int[]{-1, -2};
+        int[][] available = new int[][]{{2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {1, -2}, {-1, 2}, {-1, -2}};
         return process(x, y, available, 0, 0, k);
     }
 
@@ -38,10 +30,36 @@ public class HorseJump {
         return res;
     }
 
+    public static int dpWays(int x, int y, int k) {
+        if (x < 0 || x > 8 || y < 0 || y > 9 || k < 0) {
+            return 0;
+        }
+        int[][][] dp = new int[9][10][k + 1];
+        dp[x][y][0] = 1;
+        int[][] available = new int[][]{{2, 1}, {2, -1}, {-2, 1}, {-2, -1}, {1, 2}, {1, -2}, {-1, 2}, {-1, -2}};
+        for (int z = 1; z <= k; z++) {
+            for (int curX = 0; curX < 9; curX++) {
+                for (int curY = 0; curY < 10; curY++) {
+                    for (int[] ints : available) {
+                        if (curX + ints[0] < 0 || curX + ints[0] >= 9 || curY + ints[1] < 0 || curY + ints[1] >= 10) {
+                            continue;
+                        }
+                        dp[curX][curY][z] += dp[curX + ints[0]][curY + ints[1]][z - 1];
+                    }
+                }
+            }
+        }
+        return dp[0][0][k];
+    }
+
     public static void main(String[] args) {
         int x = 7;
         int y = 7;
         int k = 10;
+//        int x = 2;
+//        int y = 1;
+//        int k = 1;
         System.out.println(horseJump(x, y, k));
+        System.out.println(dpWays(x, y, k));
     }
 }
