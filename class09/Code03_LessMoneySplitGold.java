@@ -61,16 +61,18 @@ public class Code03_LessMoneySplitGold {
 	}
 
 	public static void main(String[] args) {
-		int testTime = 100000;
-		int maxSize = 6;
-		int maxValue = 1000;
-		for (int i = 0; i < testTime; i++) {
-			int[] arr = generateRandomArray(maxSize, maxValue);
-			if (lessMoney1(arr) != lessMoney2(arr)) {
-				System.out.println("Oops!");
-			}
-		}
-		System.out.println("finish!");
+//		int testTime = 100000;
+//		int maxSize = 6;
+//		int maxValue = 1000;
+//		for (int i = 0; i < testTime; i++) {
+//			int[] arr = generateRandomArray(maxSize, maxValue);
+//			if (lessMoney1(arr) != lessMoney2(arr)) {
+//				System.out.println("Oops!");
+//			}
+//		}
+//		System.out.println("finish!");
+		int[] arr = {3,4,2,1,2};
+		System.out.println(lessMoney1(arr));
 	}
 
 }

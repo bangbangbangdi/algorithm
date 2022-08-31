@@ -16,12 +16,15 @@ import java.util.Iterator;
 public class LowestLexicography {
 
     public static String lowestLexicography(String[] arr) {
-        Arrays.sort(arr, new MyComparator());
-        StringBuilder ans = new StringBuilder();
-        for (String s : arr) {
-            ans.append(s);
+        if (arr == null || arr.length == 0) {
+            return "";
         }
-        return ans.toString();
+        Arrays.sort(arr, new MyComparator());
+        StringBuilder sb = new StringBuilder();
+        for (String s : arr) {
+            sb.append(s);
+        }
+        return sb.toString();
     }
 
     public static class MyComparator implements Comparator<String> {
@@ -32,14 +35,12 @@ public class LowestLexicography {
     }
 
     public static String compare(String[] arr) {
-        if (arr == null || arr.length < 1) {
+        if (arr == null || arr.length == 0) {
             return "";
         }
-        int index = 0;
-        StringBuilder sb = new StringBuilder();
         HashSet<String> set = new HashSet<>();
-        process(arr, index, sb, set);
-//        set.forEach(System.out::println);
+        StringBuilder path = new StringBuilder();
+        process(arr, 0, set, path);
         Iterator<String> iterator = set.iterator();
         String min = iterator.next();
         while (iterator.hasNext()) {
@@ -49,14 +50,14 @@ public class LowestLexicography {
         return min;
     }
 
-    public static void process(String[] arr, int index, StringBuilder path, HashSet<String> set) {
+    public static void process(String[] arr, int index, HashSet<String> set, StringBuilder path) {
         if (index == arr.length) {
             set.add(path.toString());
         }
         for (int i = index; i < arr.length; i++) {
             swap(arr, index, i);
-            process(arr, index + 1, path.append(arr[index]), set);
-            path.delete(path.length() - arr[index].length(),path.length());
+            process(arr, index + 1, set, path.append(arr[index]));
+            path.delete(path.length() - arr[index].length(), path.length());
             swap(arr, index, i);
         }
     }
