@@ -18,6 +18,8 @@ public class LessMoneySplitGold {
         if (arr == null || arr.length == 0) {
             return 0;
         }
+
+
         Arrays.sort(arr);
         int cost = 0;
         for (int i = arr.length; i > 1; i--) {
@@ -94,10 +96,10 @@ public class LessMoneySplitGold {
     }
 
     public static void main(String[] args) {
-        test();
-//        int[] arr = {2,4,1,1};
-//        System.out.println("compare" + compare(arr));
-//        System.out.println("less" + less(arr));
-
+        PriorityQueue<Integer> heap = new PriorityQueue<>();
+        heap.add(5);
+        heap.add(2);
+        heap.add(1);
+        System.out.println(heap.poll());
     }
 }
