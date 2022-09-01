@@ -3,7 +3,6 @@ package basicAlgorithm.greedy;
 //必须把所有的字符串拼接起来，
 //返回所有可能的拼接结果中，字典序最小的结果
 
-import javafx.beans.property.StringProperty;
 
 import java.util.Arrays;
 import java.util.Comparator;

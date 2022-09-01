@@ -30,21 +30,20 @@ public class LessMoneySplitGold {
         if (arr == null || arr.length == 0) {
             return 0;
         }
-        return process(arr, 0);
+        Arrays.sort(arr);
+        return process(arr, 0, arr.length - 1);
     }
 
-    public static int process(int[] arr, int index) {
-        if (index == arr.length - 1) {
+    public static int process(int[] arr, int left, int right) {
+        if (left >= right) {
             return 0;
         }
-        int curCost = arr[index] == 0 ? 0 : Arrays.stream(arr, index, arr.length).sum();
-        int remainCost = Integer.MAX_VALUE;
-        for (int i = index; i < arr.length; i++) {
-            Tools.swap(arr, index, i);
-            remainCost = Math.min(remainCost, process(arr, index + 1));
-            Tools.swap(arr, index, i);
+        int cur = Arrays.stream(arr, left, right + 1).sum();
+        int remain = Integer.MAX_VALUE;
+        for (int index = left; index < right; index++) {
+            remain = Math.min(remain, process(arr, left, index) + process(arr, index + 1, right));
         }
-        return curCost + remainCost;
+        return cur + (remain == Integer.MAX_VALUE ? 0 : remain);
     }
 
     public static int[] generateRandomArray(int maxSize, int maxValue) {
@@ -74,20 +73,20 @@ public class LessMoneySplitGold {
     public static void test() {
         int testTime = 1000000;
         int maxSize = 10;
-        int maxValue = 5;
+        int maxValue = 10;
         boolean succeed = true;
         for (int i = 0; i < testTime && succeed; i++) {
             int[] arr = generateRandomArray(maxSize, maxValue);
 //            int[] copyArr = Tools.copyArr(arr);
 //            Tools.printArray(arr);
             int compare = compare(arr);
-            int less = less(arr);
+//            int less = less(arr);
             int less2 = lessMoney2(arr);
-            if (compare != less || compare != less2) {
+            if (compare != less2) {
                 succeed = false;
                 Tools.printArray(arr);
                 System.out.println("compare: " + compare);
-                System.out.println("less: " + less);
+//                System.out.println("less: " + less);
                 System.out.println("less2: " + less2);
             }
         }
@@ -96,7 +95,7 @@ public class LessMoneySplitGold {
 
     public static void main(String[] args) {
         test();
-//        int[] arr = {3,4,2,1,2};
+//        int[] arr = {2,4,1,1};
 //        System.out.println("compare" + compare(arr));
 //        System.out.println("less" + less(arr));
 
