@@ -7,8 +7,17 @@ package basicAlgorithm.greedy;
 //但如果先把长度60的金条分成30和30，花费60;再把长度30金条分成10和20， 花费30;一共花费90铜板。
 //输入一个数组，返回分割的最小代价。
 
+//该题目的精髓在于需要把握住,从大往小拆分的花销和从小组合到大的花销是一致的
+//如何把一个数组以最小的成本组合到一起呢？
+//数组第一小的和数组第二小的组合
+//然后组合后的数字重新加入数组中进行排序,再重复上一步
+//堆无疑能很方便的实现上述功能
+//不过这这种解法依然有个含混的地方,例如如果遇上 [0,0,0,20]
+//这种类型的数组,那么最后所得出的结果会是20,而实际上应该是0
+
 import tool.Tools;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 
@@ -18,16 +27,21 @@ public class LessMoneySplitGold {
         if (arr == null || arr.length == 0) {
             return 0;
         }
-
-
-        Arrays.sort(arr);
-        int cost = 0;
-        for (int i = arr.length; i > 1; i--) {
-            cost += Arrays.stream(arr, 0, i).sum();
+        PriorityQueue<Integer> heap = new PriorityQueue<>();
+        for (int i : arr) {
+            heap.add(i);
         }
-        return cost;
+        int res = 0;
+        while (heap.size() > 1) {
+            int sum = heap.poll() + heap.poll();
+            res += sum;
+            heap.add(sum);
+        }
+        return res;
     }
 
+    // 排序 + 任意顺序切割 虽然不知道为啥是正确的,不过确实能通过对数器
+    // 有可能的解释是,排序行为是最小方案的前提,在满足前提的情况下,再对切割行为进行全排列就能得出答案...
     public static int compare(int[] arr) {
         if (arr == null || arr.length == 0) {
             return 0;
@@ -36,17 +50,18 @@ public class LessMoneySplitGold {
         return process(arr, 0, arr.length - 1);
     }
 
-    public static int process(int[] arr, int left, int right) {
-        if (left >= right) {
+    public static int process(int[] arr, int L, int R) {
+        if (L >= R) {
             return 0;
         }
-        int cur = Arrays.stream(arr, left, right + 1).sum();
+        int cur = Arrays.stream(arr, L, R + 1).sum();
         int remain = Integer.MAX_VALUE;
-        for (int index = left; index < right; index++) {
-            remain = Math.min(remain, process(arr, left, index) + process(arr, index + 1, right));
+        for (int index = L; index < R; index++) {
+            remain = Math.min(remain, process(arr, L, index) + process(arr, index + 1, R));
         }
         return cur + (remain == Integer.MAX_VALUE ? 0 : remain);
     }
+
 
     public static int[] generateRandomArray(int maxSize, int maxValue) {
         int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
@@ -57,20 +72,6 @@ public class LessMoneySplitGold {
         return arr;
     }
 
-    public static int lessMoney2(int[] arr) {
-        PriorityQueue<Integer> pQ = new PriorityQueue<>();
-        for (int i = 0; i < arr.length; i++) {
-            pQ.add(arr[i]);
-        }
-        int sum = 0;
-        int cur = 0;
-        while (pQ.size() > 1) {
-            cur = pQ.poll() + pQ.poll();
-            sum += cur;
-            pQ.add(cur);
-        }
-        return sum;
-    }
 
     public static void test() {
         int testTime = 1000000;
@@ -79,27 +80,22 @@ public class LessMoneySplitGold {
         boolean succeed = true;
         for (int i = 0; i < testTime && succeed; i++) {
             int[] arr = generateRandomArray(maxSize, maxValue);
-//            int[] copyArr = Tools.copyArr(arr);
-//            Tools.printArray(arr);
             int compare = compare(arr);
-//            int less = less(arr);
-            int less2 = lessMoney2(arr);
-            if (compare != less2) {
+            int less = less(arr);
+            if (compare != less) {
                 succeed = false;
                 Tools.printArray(arr);
                 System.out.println("compare: " + compare);
-//                System.out.println("less: " + less);
-                System.out.println("less2: " + less2);
+                System.out.println("less: " + less);
             }
         }
         System.out.println(succeed ? "Nice" : "Fuck");
     }
 
     public static void main(String[] args) {
-        PriorityQueue<Integer> heap = new PriorityQueue<>();
-        heap.add(5);
-        heap.add(2);
-        heap.add(1);
-        System.out.println(heap.poll());
+        test();
+//        int[] arr = {1, 2, 3};
+//        System.out.println(less(arr));
+//        System.out.println(compare(arr));
     }
 }
