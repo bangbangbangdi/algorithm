@@ -5,9 +5,9 @@ public class Node {
     public int end;
     public Node[] next;
 
-    public Node(int pass,int end) {
-        this.pass = pass;
-        this.end = end;
+    public Node() {
+        this.pass = 0;
+        this.end = 0;
         this.next = new Node[26];
     }
 
