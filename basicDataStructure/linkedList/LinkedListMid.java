@@ -37,13 +37,40 @@ public class LinkedListMid {
         return slow;
     }
 
+    public static Node midOrUpPreNode(Node head) {
+        if (head == null || head.next == null || head.next.next == null) {
+            return head;
+        }
+        Node fast = head.next.next;
+        Node slow = head;
+        while (fast.next != null && fast.next.next != null) {
+
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow;
+    }
+
+    public static Node midOrDownPreNode(Node head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        Node fast = head.next;
+        Node slow = head;
+        while (fast.next != null && fast.next.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+
     public static void test() {
         Node[] arr = Tools.generateRandomNodeArray(10, 10);
         for (int i = 0; i < arr.length - 1; i++) {
             arr[i].next = arr[i + 1];
         }
         Tools.printAllNodes(arr);
-        System.out.println(midOrDownNode(arr[0]).value);
+        System.out.println(midOrDownPreNode(arr[0]).value);
     }
 
     public static void main(String[] args) {

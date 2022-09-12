@@ -317,6 +317,8 @@ public class Tools {
         arr[i] = arr[i] ^ arr[j];
     }
 
+    
+
     public static int getRandomInt(int maxValue) {
         return (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
     }
