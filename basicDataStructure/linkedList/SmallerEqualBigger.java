@@ -1,12 +1,12 @@
 package basicDataStructure.linkedList;
 
-//将单向链表按某值划分成左边小、中间相等、右边大的形式
-//1）把链表放入数组里，在数组上做partition（笔试用）
-//2）分成小、中、大三部分，再把各个部分之间串起来（面试用）
-
+// 将单向链表按某值划分成左边小、中间相等、右边大的形式
+// 1）把链表放入数组里，在数组上做partition（笔试用）
+// 2）分成小、中、大三部分，再把各个部分之间串起来（面试用）
 
 import tool.Node;
 import tool.Tools;
+
 
 import java.util.ArrayList;
 
@@ -16,7 +16,6 @@ public class SmallerEqualBigger {
         if (head == null || head.next == null) {
             return head;
         }
-
         ArrayList<Node> arr = new ArrayList<>();
         while (head != null) {
             arr.add(head);
@@ -44,6 +43,55 @@ public class SmallerEqualBigger {
         return res;
     }
 
+    public static Node normalWay(Node head, int value) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        Node sHead = null;
+        Node sTail = null;
+        Node eHead = null;
+        Node eTail = null;
+        Node bHead = null;
+        Node bTail = null;
+        Node cur = head;
+        while (cur != null) {
+            if (cur.value < value) {
+                if (sHead == null){
+                    sHead = cur;
+                }else {
+                    sTail.next = cur;
+                }
+                sTail = cur;
+            } else if (cur.value > value) {
+                if (bHead == null){
+                    bHead = cur;
+                }else {
+                    bTail.next = cur;
+                }
+                bTail = cur;
+            } else {
+                if (eHead == null){
+                    eHead = cur;
+                }else {
+                    eTail.next = cur;
+                }
+                eTail = cur;
+            }
+            cur = cur.next;
+        }
+        if (bTail != null) {
+            bTail.next = null;
+        }
+        if (sHead != null) {
+            sTail.next = eHead != null ? eHead : bHead;
+        }
+        if (eHead != null) {
+            eTail.next = bHead;
+        }
+
+        return sHead != null ? sHead : eHead != null ? eHead : bHead;
+    }
+
     public static void swap(ArrayList<Node> arr, int i, int j) {
         if (i == j) {
             return;
@@ -63,7 +111,8 @@ public class SmallerEqualBigger {
         n2.next = n3;
         n3.next = n4;
         n4.next = n5;
-        nodePartition(n1, 2);
+//        nodePartition(n1, 2);
+        normalWay(n1, 2);
         Tools.printAllNodes(n1);
     }
 
