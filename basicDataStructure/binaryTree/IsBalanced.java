@@ -34,6 +34,23 @@ public class IsBalanced {
         }
     }
 
+    public static boolean isBalanced2(BtNode head) {
+        if (head == null) {
+            return true;
+        }
+        return true;
+    }
+
+    public static int process(BtNode head, Boolean isFull) {
+        if (head == null || !isFull) {
+            return -1;
+        }
+        int left = process(head.left, isFull);
+        int right = process(head.right, isFull);
+        isFull = Math.abs(left - right) <= 1;
+        return Math.max(left, right) + 1;
+    }
+
     public static void test() {
         BtNode n0 = new BtNode(1);
         BtNode n1 = new BtNode(2);
@@ -53,8 +70,15 @@ public class IsBalanced {
         System.out.println(isBalanced(n0));
     }
 
+    public static void test(String[] b){
+        b[0] = "aa";
+    }
+
     public static void main(String[] args) {
-        test();
+        String[] b = {"cc"};
+        System.out.println(b[0]);
+        test(b);
+        System.out.println(b[0]);
     }
 
 }
