@@ -20,6 +20,12 @@ public class Dijkstra {
             this.node = node;
             this.distance = distance;
         }
+
+        public void setDistance(int distance) {
+            if (distance < this.distance) {
+                this.distance = distance;
+            }
+        }
     }
 
     public static class Heap<V> {
@@ -66,10 +72,8 @@ public class Dijkstra {
             }
             if (isContains(node)) {
                 Integer index = map.get(node);
-                if (com.compare(node, heap.get(index)) > 0) {
-                    heap.set(index, node);
-                    heapInsert(index);
-                }
+                heap.set(index, node);
+                heapInsert(index);
             } else {
                 heap.add(node);
                 map.put(node, heap.size() - 1);
@@ -123,6 +127,7 @@ public class Dijkstra {
         HashMap<Node, NodeRecord<Node>> map = new HashMap<>();
         Heap<NodeRecord<Node>> heap = new Heap<>(arr.size(), new NodeRecordCom());
         HashMap<Node, Integer> ans = new HashMap<>();
+        ArrayList<NodeRecord> list = new ArrayList<>();
 
         for (Node node : arr) {
             if (node == from) {
@@ -138,13 +143,19 @@ public class Dijkstra {
         while (!heap.isEmpty()) {
             NodeRecord<Node> pop = heap.pop();
             ans.put(pop.node, pop.distance);
+            list.add(pop);
             for (Edge edge : pop.node.edges) {
                 Node to = edge.to;
                 NodeRecord<Node> record = map.get(to);
-                record.distance = pop.distance + edge.weight;
+                record.setDistance(pop.distance + edge.weight);
                 heap.addOrUpdateOrIgnore(record);
             }
         }
+
+        for (NodeRecord<Node> node : list) {
+            System.out.println(node.node.value + " : " + node.distance);
+        }
+        System.out.println();
 
         return ans;
     }
@@ -195,6 +206,25 @@ public class Dijkstra {
         for (Node node : res.keySet()) {
             System.out.println(node.value + " : " + res.get(node));
         }
+
+//        NodeRecord<Node> re1 = new NodeRecord<>(n1, 5);
+//        NodeRecord<Node> re2 = new NodeRecord<>(n2, 4);
+//        NodeRecord<Node> re3 = new NodeRecord<>(n3, 100);
+//
+//        Heap<NodeRecord<Node>> heap = new Heap<>(3, new NodeRecordCom());
+//        heap.addOrUpdateOrIgnore(re1);
+//        heap.addOrUpdateOrIgnore(re2);
+//        heap.addOrUpdateOrIgnore(re3);
+//        re3.setDistance(1);
+//        heap.addOrUpdateOrIgnore(re3);
+//
+//        NodeRecord<Node> p1 = heap.pop();
+//        NodeRecord<Node> p2 = heap.pop();
+//        NodeRecord<Node> p3 = heap.pop();
+//
+//        System.out.println(p1.node.value + " : " + p1.distance);
+//        System.out.println(p2.node.value + " : " + p2.distance);
+//        System.out.println(p3.node.value + " : " + p3.distance);
     }
 
     public static void main(String[] args) {
