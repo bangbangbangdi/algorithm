@@ -1,6 +1,5 @@
 package basicDataStructure.linkedList;
 
-import class02.Code03_DoubleEndsQueueToStackAndQueue;
 import tool.Node2;
 
 import java.util.LinkedList;

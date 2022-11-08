@@ -13,8 +13,6 @@ package basicDataStructure.linkedList;
 //        时间复杂度O(N)，额外空间复杂度O(1)
 
 
-import class06.Code04_CopyListWithRandom;
-
 import java.util.HashMap;
 
 public class CopyListWithRandom {
