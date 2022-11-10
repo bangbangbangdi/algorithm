@@ -1,7 +1,5 @@
 package basicDataStructure.disjoinSet;
 
-import myClass10.Code01_UnionFind;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
