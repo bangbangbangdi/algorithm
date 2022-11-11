@@ -16,6 +16,28 @@ public class Tools {
         printBTProcess(head, length, "Head", 0);
     }
 
+    public static int[] getRandomArray(int size, int max) {
+        int[] arr = new int[(int) (Math.random() * size) + 1];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = (int) (Math.random() * max) - (int) (Math.random() * max);
+        }
+        return arr;
+    }
+
+    public static int[] getRandomArrayNoRepeat(int size) {
+        int[] arr = new int[(int) (Math.random() * size) + 1];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = i;
+        }
+        for (int i = 0; i < arr.length; i++) {
+            int swapIndex = (int) (Math.random() * arr.length);
+            int tmp = arr[swapIndex];
+            arr[swapIndex] = arr[i];
+            arr[i] = tmp;
+        }
+        return arr;
+    }
+
     public static void printBTProcess(BtNode head, int length, String to, int level) {
         if (head == null) {
             return;

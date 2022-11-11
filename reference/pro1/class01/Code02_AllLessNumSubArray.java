@@ -38,6 +38,9 @@ public class Code02_AllLessNumSubArray {
 			if (qmax.peekFirst() == L) {
 				qmax.pollFirst();
 			}
+			System.out.println("R = " + R);
+			System.out.println("L = " + L);
+			System.out.println("res = " + res);
 			L++;
 		}
 		return res;
@@ -66,11 +69,9 @@ public class Code02_AllLessNumSubArray {
 	}
 
 	public static void main(String[] args) {
-		int[] arr = getRandomArray(30);
-		int num = 5;
-		printArray(arr);
-		System.out.println(getNum(arr, num));
-
+		int[] arr = {3,2,1,5,4,1};
+		System.out.println(getNum(arr, 2));
+//		System.out.println(compare(arr,2));
 	}
 
 }
