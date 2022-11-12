@@ -1,4 +1,4 @@
-package my_practise.pro1;
+package my_practise.pro1.class01;
 
 import com.sun.jdi.IntegerType;
 import tool.Tools;
