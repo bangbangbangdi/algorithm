@@ -1,5 +1,7 @@
 package basicAlgorithm.dynamicProgramming.scope;
 
+import tool.Tools;
+
 public class NQueens {
     public static int getNQueens(int N){
         if (N < 1){
@@ -11,6 +13,7 @@ public class NQueens {
 
     public static int process(int[] record,int index){
         if (index == record.length){
+            Tools.printArray(record);
             return 1;
         }
         int res = 0;
