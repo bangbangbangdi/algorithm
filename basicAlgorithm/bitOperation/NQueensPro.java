@@ -30,7 +30,7 @@ public class NQueensPro {
     }
 
     public static void main(String[] args) {
-        System.out.println(getNQueens(10));
+        System.out.println(getNQueens(3));
     }
 
 }
