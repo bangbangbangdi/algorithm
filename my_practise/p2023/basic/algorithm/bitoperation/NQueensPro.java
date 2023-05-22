@@ -17,7 +17,7 @@ import java.util.Arrays;
 public class NQueensPro {
 
     public static int getQueens(int N) {
-        if (N == 0) {
+        if (N <= 0) {
             return -1;
         }
         int[] record = new int[N];
@@ -47,9 +47,31 @@ public class NQueensPro {
         return true;
     }
 
+    public static int getQueenPro(int N) {
+        if (N <= 0){
+            return -1;
+        }
+        int finish = N == 32 ? -1 : (1<<N)-1;
+        return processPro(0,0,0,finish);
+    }
+
+    public static int processPro(int record,int leftLimit,int rightLimit,int finish){
+        if (record == finish){
+            return 1;
+        }
+        int pos = ~(record | leftLimit | rightLimit) & finish;
+        int res = 0;
+        while(pos != 0){
+            int rightOne = pos & (~pos + 1);
+            res += processPro(record | rightOne,(leftLimit | rightOne) << 1,(rightLimit | rightOne) >> 1,finish);
+            pos -= rightOne;
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
         int N = 10;
-        System.out.println(getQueens(N));
+        System.out.println(getQueenPro(N));
     }
 
 }
