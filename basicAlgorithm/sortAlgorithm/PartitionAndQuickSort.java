@@ -5,6 +5,7 @@ import tool.Tools;
 import java.util.Arrays;
 
 public class PartitionAndQuickSort {
+
     public static int partition(int[] arr, int L, int R) {
         int lessEqual = L - 1;
         int i = L;

@@ -21,25 +21,38 @@ public class PartitionAndQuickSort {
         }
         int index = -1;
         for (int i = 0; i < arr.length; i++) {
-           if (arr[i] <= arr[arr.length - 1]){
-               Tools.swap(arr,++index,i);
-           }
+            if (arr[i] <= arr[arr.length - 1]) {
+                Tools.swap(arr, ++index, i);
+            }
         }
     }
 
     //荷兰国旗问题：给定一个数组arr，和一个整数num,请把小于num的数放在数组的左边,等于num的数放在中间,大于num的数放在数组的右边
     //要求额外空间复杂度O(1),时间复杂度O(N)
-    public static void netherlandsFlag(int[] arr){
-        if (arr == null || arr.length < 2){
+    public static void netherlandsFlag(int[] arr) {
+        if (arr == null || arr.length < 2) {
             return;
         }
-        int
+        int minIndex = -1;
+        int maxIndex = arr.length - 1;
+        int num = arr[maxIndex];
+        int i = 0;
+        while (i < maxIndex ) {
+            if (arr[i] < num) {
+                Tools.swap(arr, ++minIndex, i++);
+            } else if (arr[i] > num) {
+                Tools.swap(arr, --maxIndex, i);
+            } else {
+                i++;
+            }
+        }
+        Tools.swap(arr, arr.length - 1, maxIndex);
     }
 
     public static void main(String[] args) {
         int[] arr = Tools.generateRandomArray(100, 10);
         Tools.printArray(arr);
-        partition(arr);
+        netherlandsFlag(arr);
         Tools.printArray(arr);
     }
 
