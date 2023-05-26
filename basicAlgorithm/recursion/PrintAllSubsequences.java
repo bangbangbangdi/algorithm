@@ -25,6 +25,6 @@ public class PrintAllSubsequences {
     }
 
     public static void main(String[] args) {
-        printAllSubsequences("abcdefg");
+        printAllSubsequences("abc");
     }
 }

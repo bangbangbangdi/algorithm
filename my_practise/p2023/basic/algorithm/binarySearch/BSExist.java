@@ -36,18 +36,18 @@ public class BSExist {
 
 
     public static boolean BSExist(int[] arr, int num) {
-        if (arr == null || arr.length < 1) {
+        if (arr == null || arr.length < 1){
             return false;
         }
         int L = 0;
         int R = arr.length - 1;
-        while (L <= R) {
-            int mid = L + (R - L) / 2;
-            if (arr[mid] == num) {
+        while(L <= R){
+            int mid = L + ((R - L) >> 1);
+            if (arr[mid] == num){
                 return true;
             } else if (arr[mid] > num) {
                 R = mid - 1;
-            } else {
+            }else {
                 L = mid + 1;
             }
         }
