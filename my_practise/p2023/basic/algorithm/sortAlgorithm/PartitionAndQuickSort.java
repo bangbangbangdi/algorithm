@@ -66,17 +66,17 @@ public class PartitionAndQuickSort {
         }
         int lessEqual = partition1(arr, L, R);
         process1(arr, L, lessEqual - 1);
-        process1(arr, lessEqual, R);
+        process1(arr, lessEqual + 1, R);
     }
 
     public static int partition1(int[] arr, int L, int R) {
         int lessEqual = L - 1;
-        for (int i = L; i <= R; i++) {
-            if (arr[i] <= arr[R]) {
-                Tools.swap(arr, ++lessEqual, i);
+        while (L <= R) {
+            if (arr[L] <= arr[R]) {
+                Tools.swap(arr, ++lessEqual, L);
             }
+            L++;
         }
-        //System.out.println("lessEqual = " + lessEqual);
         return lessEqual;
     }
 
@@ -91,11 +91,25 @@ public class PartitionAndQuickSort {
         if (L >= R) {
             return;
         }
-        int[] res = netherlandsFlag2(arr, L, R);
-        int less = res[0];
-        int more = res[1];
-        process2(arr, L, less - 1);
-        process2(arr, more + 1, R);
+        int[] res = netherlandsFlags(arr, L, R);
+        process2(arr, L, res[0] - 1);
+        process2(arr, res[1] + 1, R);
+    }
+
+    public static int[] netherlandsFlags(int[] arr, int L, int R) {
+        int less = L - 1;
+        int more = R;
+        while (L < more) {
+            if (arr[L] < arr[R]) {
+                Tools.swap(arr, ++less, L++);
+            } else if (arr[L] > arr[R]) {
+                Tools.swap(arr, --more, L);
+            } else {
+                L++;
+            }
+        }
+        Tools.swap(arr, R, more);
+        return new int[]{++less, more};
     }
 
     public static void quickSort3(int[] arr) {
@@ -110,40 +124,11 @@ public class PartitionAndQuickSort {
             return;
         }
         Tools.swap(arr, L, L + (int) (Math.random() * (R - L + 1)));
-        int[] res = netherlandsFlag2(arr, L, R);
+        int[] res = netherlandsFlags(arr, L, R);
         process3(arr, L, res[0] - 1);
         process3(arr, res[1] + 1, R);
     }
 
-
-    public static int[] netherlandsFlag2(int[] arr, int L, int R) {
-        if (arr == null || arr.length < 1) {
-            return null;
-        }
-        //System.out.println("==================================");
-        //Tools.printArray(arr);
-        //System.out.println("L = " + L);
-        //System.out.println("R = " + R);
-        int less = L - 1;
-        int more = R;
-        int num = arr[more];
-        int i = L;
-        while (i < more) {
-            if (arr[i] < num) {
-                Tools.swap(arr, ++less, i++);
-            } else if (arr[i] > num) {
-                Tools.swap(arr, --more, i);
-            } else {
-                i++;
-            }
-        }
-        Tools.swap(arr, R, more);
-        //Tools.printArray(arr);
-        //System.out.println("less = " + (less + 1));
-        //System.out.println("more = " + more);
-        //System.out.println("-------------------------------------");
-        return new int[]{++less, more};
-    }
 
     public static void test() {
         int testTime = 1000000;
@@ -183,7 +168,10 @@ public class PartitionAndQuickSort {
         //int[] arr = Tools.generateRandomArray(100, 10);
         //Tools.printArray(arr);
         //quickSort2(arr);
+        //int[] res = netherlandsFlags(arr, 0, arr.length - 1);
         //Tools.printArray(arr);
+        //System.out.println("res[0] = " + res[0]);
+        //System.out.println("res[1] = " + res[1]);
 
         test();
     }
