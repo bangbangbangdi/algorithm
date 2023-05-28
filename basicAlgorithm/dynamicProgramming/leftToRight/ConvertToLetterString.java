@@ -51,7 +51,7 @@ public class ConvertToLetterString {
     }
 
     public static void main(String[] args) {
-        System.out.println(number("1111"));
+        System.out.println(number("122111"));
         System.out.println(dpWays("1111"));
     }
 
