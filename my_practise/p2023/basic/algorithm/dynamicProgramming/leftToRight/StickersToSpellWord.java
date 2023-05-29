@@ -1,5 +1,7 @@
 package my_practise.p2023.basic.algorithm.dynamicProgramming.leftToRight;
 
+import java.util.HashMap;
+
 /**
  * projectName:    algorithm
  * package:        my_practise.p2023.basic.algorithm.dynamicProgramming.leftToRight
@@ -19,38 +21,54 @@ public class StickersToSpellWord {
 
     public static int stickersToSpellWord(String str, String[] arr) {
         if (str == null || str.length() < 1 || arr == null || arr.length < 1) {
-            return 0;
+            return -1;
         }
-//        int[] target = new int[26];
-//        int[][] bullet = new int[arr.length][26];
-//        for (int i = 0; i < str.length(); i++) {
-//            target[str.charAt(i) - 48]++;
-//        }
-//        for (int i = 0; i < arr.length; i++) {
-//            for (int j = 0; j < arr[i].length(); j++) {
-//                bullet[i][arr[i].charAt(j) - 48]++;
-//            }
-//        }
-        return process(str, arr, 0, 0);
+        HashMap<String, Integer> dp = new HashMap<>();
+        dp.put("", 0);
+        int[][] bulletWF = new int[arr.length][26];
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr[i].length(); j++) {
+                bulletWF[i][arr[i].charAt(j) - 97]++;
+            }
+        }
+        return process(dp, bulletWF, str);
     }
 
-    public static int process(String str, String[] arr, int index, int count) {
-        if (str.equals("")) {
-            return count;
+    public static int process(HashMap<String, Integer> dp, int[][] bulletWF, String str) {
+        if (dp.get(str) != null) {
+            return dp.get(str);
         }
-        int[] target = new int[26];
-        int[] bullet = new int[26];
-        String b = arr[index];
-        for (int i = 0; i < str.length(); i++) {
-            target[str.charAt(i) - 48]++;
+        char[] target = str.toCharArray();
+        int[] targetWF = new int[26];
+        int res = Integer.MAX_VALUE;
+        for (char c : target) {
+            targetWF[c - 97]++;
         }
-        for (int i = 0; i < b.length(); i++) {
-            bullet[b.charAt(i) - 48]++;
+        for (int i = 0; i < bulletWF.length; i++) {
+            if (bulletWF[i][target[0] - 97] == 0) {
+                continue;
+            }
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < 26; j++) {
+                while (targetWF[j] - bulletWF[i][j] > 0) {
+                    sb.append((char) (97 + j));
+                    targetWF[j]--;
+                }
+            }
+            int tmp = process(dp, bulletWF, sb.toString());
+            if (tmp != -1) {
+                res = Math.min(res, tmp + 1);
+            }
         }
-        for (int i = 0; i < 26; i++) {
-
-        }
-        return 1;
+        dp.put(str, res == Integer.MAX_VALUE ? -1 : res);
+        return dp.get(str);
     }
 
+
+    public static void main(String[] args) {
+        String str = "aabbcccccddddeeee";
+        String[] arr = {"abb", "ccdd", "ddee"};
+        System.out.println(stickersToSpellWord(str, arr));
+
+    }
 }
