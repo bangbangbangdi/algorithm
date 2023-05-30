@@ -37,8 +37,30 @@ public class CardsInLine {
         return Math.min(f(arr, L + 1, R), f(arr, L, R - 1));
     }
 
+    public static int dpWays(int[] arr) {
+        if (arr == null || arr.length < 1) {
+            return -1;
+        }
+        int N = arr.length;
+        int[][] dpF = new int[N][N];
+        int[][] dpS = new int[N][N];
+        for (int i = 0; i < arr.length; i++) {
+            dpF[i][i] = arr[i];
+        }
+        for (int i = 1; i < arr.length; i++) {
+            for (int j = 0; j < arr.length - i; j++) {
+                int L = j;
+                int R = j + i;
+                dpF[L][R] = Math.max(arr[L] + dpS[L + 1][R], arr[L + 1] + dpS[j][R - 1]);
+                dpS[L][R] = Math.min(dpF[L + 1][R], dpF[L][R - 1]);
+            }
+        }
+        return Math.max(dpF[0][N - 1], dpS[0][N - 1]);
+    }
+
     public static void main(String[] args) {
-        int[] arr = {5,10,20,7};
+        int[] arr = {5, 10, 20, 7};
         System.out.println(cardsInLine(arr));
+        System.out.println(dpWays(arr));
     }
 }

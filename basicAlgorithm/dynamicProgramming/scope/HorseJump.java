@@ -53,12 +53,12 @@ public class HorseJump {
     }
 
     public static void main(String[] args) {
-        int x = 7;
-        int y = 7;
-        int k = 10;
-//        int x = 2;
-//        int y = 1;
-//        int k = 1;
+        //int x = 7;
+        //int y = 7;
+        //int k = 10;
+        int x = 2;
+        int y = 1;
+        int k = 3;
         System.out.println(horseJump(x, y, k));
         System.out.println(dpWays(x, y, k));
     }
