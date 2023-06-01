@@ -150,12 +150,12 @@ public class BestArrange {
     }
 
     public static void main(String[] args) {
-        test();
-//        Program p1 = new Program(17, 18);
-//        Program p2 = new Program(1, 20);
-//        Program p3 = new Program(0, 17);
-//        Program p4 = new Program(2, 3);
-//        Program[] arr = {p1,p2,p3,p4};
-//        System.out.println(compare(arr));
+//        test();
+        Program p1 = new Program(17, 18);
+        Program p2 = new Program(1, 20);
+        Program p3 = new Program(0, 17);
+        Program p4 = new Program(2, 3);
+        Program[] arr = {p1,p2,p3,p4};
+        System.out.println(compare(arr));
     }
 }

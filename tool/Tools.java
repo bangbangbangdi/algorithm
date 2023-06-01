@@ -339,6 +339,15 @@ public class Tools {
         arr[i] = arr[i] ^ arr[j];
     }
 
+    public static void swap(Object[] arr,int i,int j){
+        if ((arr == null) || i == j){
+            return ;
+        }
+        Object tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+    }
+
     
 
     public static int getRandomInt(int maxValue) {
