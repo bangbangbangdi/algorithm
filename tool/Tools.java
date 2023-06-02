@@ -277,6 +277,14 @@ public class Tools {
         }
     }
 
+    public static int[] generateRandomArray(int maxSize, int maxValue, int minValue) {
+        int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = (int) (minValue  + (maxValue - minValue + 1) * Math.random());
+        }
+        return arr;
+    }
+
     public static void printArray(int[] arr) {
         if (arr == null) {
             return;
@@ -339,16 +347,15 @@ public class Tools {
         arr[i] = arr[i] ^ arr[j];
     }
 
-    public static void swap(Object[] arr,int i,int j){
-        if ((arr == null) || i == j){
-            return ;
+    public static void swap(Object[] arr, int i, int j) {
+        if ((arr == null) || i == j) {
+            return;
         }
         Object tmp = arr[i];
         arr[i] = arr[j];
         arr[j] = tmp;
     }
 
-    
 
     public static int getRandomInt(int maxValue) {
         return (int) ((maxValue + 1) * Math.random()) - (int) (maxValue * Math.random());
@@ -357,7 +364,7 @@ public class Tools {
     public static int getRandomInt(int maxValue, boolean isContainNegative) {
         if (isContainNegative) {
             return getRandomInt(maxValue);
-        }else{
+        } else {
             return (int) ((maxValue + 1) * Math.random());
         }
     }

@@ -1,5 +1,10 @@
 package my_practise.p2023.basic.algorithm.greedy;
 
+import tool.Tools;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
 /**
  * projectName:    algorithm
  * package:        my_practise.p2023.basic.algorithm.greedy
@@ -16,4 +21,70 @@ package my_practise.p2023.basic.algorithm.greedy;
  * version:    1.0
  */
 public class LessMoneySplitGold {
+
+    public static int lms(int[] arr) {
+        if (arr == null || arr.length < 1) {
+            return 0;
+        }
+        PriorityQueue<Integer> heap = new PriorityQueue<>(new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o1 - o2;
+            }
+        });
+        for (int i : arr) {
+            heap.add(i);
+        }
+        int res = 0;
+        while (heap.size() >= 2) {
+            int sum = heap.poll() + heap.poll();
+            res += sum;
+            heap.add(sum);
+        }
+        return res;
+    }
+
+    // 这种看似正确的做法是错误的
+    public static int testLms(int[] arr) {
+        if (arr == null || arr.length < 2) {
+            return 0;
+        }
+        int sum = Arrays.stream(arr).sum();
+        int res = sum;
+        Arrays.sort(arr);
+        for (int i = arr.length - 1; i > 1; i--) {
+            sum -= arr[i];
+            res += sum;
+        }
+        return res;
+    }
+
+    public static void test() {
+        int testTime = 1000000;
+        int maxSize = 10;
+        int maxValue = 10;
+        int minValue = 1;
+        boolean succeed = true;
+        for (int i = 0; i < testTime && succeed; i++) {
+            int[] arr = Tools.generateRandomArray(maxSize, maxValue,minValue);
+            int compare = testLms(arr);
+            int less = lms(arr);
+            if (compare != less) {
+                succeed = false;
+                Tools.printArray(arr);
+                System.out.println("compare: " + compare);
+                System.out.println("less: " + less);
+            }
+        }
+        System.out.println(succeed ? "Nice" : "Fuck");
+    }
+
+
+    public static void main(String[] args) {
+        //test();
+        int[] arr = {6, 7, 8,10};
+        System.out.println(lms(arr));
+        System.out.println(testLms(arr));
+    }
+
 }
