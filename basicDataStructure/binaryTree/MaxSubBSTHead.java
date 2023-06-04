@@ -69,9 +69,9 @@ public class MaxSubBSTHead {
     }
 
     public static void test() {
-        BtNode n0 = new BtNode(5);
+        BtNode n0 = new BtNode(0);
         BtNode n1 = new BtNode(3);
-        BtNode n2 = new BtNode(7);
+        BtNode n2 = new BtNode(17);
         BtNode n3 = new BtNode(2);
         BtNode n4 = new BtNode(4);
         BtNode n5 = new BtNode(6);

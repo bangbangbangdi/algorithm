@@ -28,7 +28,7 @@ public class IsBST {
         }
         if (right != null) {
             isBST = right.isBST && isBST && (head.value < right.min);
-            max = Math.min(min, right.max);
+            max = Math.max(max, right.max);
             min = Math.min(min, right.min);
         }
 
