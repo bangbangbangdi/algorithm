@@ -1,4 +1,4 @@
-package my_practise.p2023.basic.datastructure;
+package my_practise.p2023.basic.datastructure.binaryTree;
 
 import java.util.ArrayList;
 import java.util.List;
