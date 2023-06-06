@@ -1,9 +1,11 @@
 package my_practise.p2023.basic.datastructure.binaryTree;
 
 import tool.BtNode;
+import tool.Tools;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 /**
  * projectName:    algorithm1
@@ -36,22 +38,72 @@ public class SerializeAndReconstructTree {
     }
 
     public static BtNode preReconstruct(Queue<Integer> queue) {
-        if (queue == null) {
+        if (queue == null || queue.peek() == null) {
             return null;
         }
+        Integer headValue = queue.poll();
+        BtNode head = new BtNode(headValue);
+        preRec(head, queue);
+        return head;
     }
 
     public static void preRec(BtNode head, Queue<Integer> queue) {
-        if (queue == null || queue.isEmpty()) {
+        Integer left = queue.poll();
+        if (left != null) {
+            BtNode leftSub = new BtNode(left);
+            head.left = leftSub;
+            preRec(leftSub, queue);
+        }
+        Integer right = queue.poll();
+        if (right != null) {
+            BtNode rightSub = new BtNode(right);
+            head.right = rightSub;
+            preRec(rightSub, queue);
+        }
+    }
+
+    public static Stack<Integer> postSerialize(BtNode head) {
+        if (head == null) {
+            return new Stack<>();
+        }
+        Stack<Integer> stack = new Stack<>();
+        postSer(head, stack);
+        return stack;
+    }
+
+    public static void postSer(BtNode cur, Stack<Integer> stack) {
+        if (cur == null) {
+            stack.add(null);
             return;
         }
-        if (queue.peek() == null){
-            queue.poll();
-            return;
+        postSer(cur.left, stack);
+        postSer(cur.right, stack);
+        stack.add(cur.value);
+    }
+
+    public static BtNode postReconstruct(Stack<Integer> stack) {
+        if (stack == null || stack.peek() == null) {
+            return null;
         }
-        Integer poll = queue.poll();
-        BtNode cur = new BtNode(poll);
-        pre();
+        Integer value = stack.pop();
+        BtNode head = new BtNode(value);
+        postRec(stack, head);
+        return head;
+    }
+
+    public static void postRec(Stack<Integer> stack, BtNode head) {
+        Integer rightValue = stack.pop();
+        if (rightValue != null) {
+            BtNode right = new BtNode(rightValue);
+            head.right = right;
+            postRec(stack, right);
+        }
+        Integer leftValue = stack.pop();
+        if (leftValue != null) {
+            BtNode left = new BtNode(leftValue);
+            head.left = left;
+            postRec(stack, left);
+        }
     }
 
     public static void test() {
@@ -70,12 +122,14 @@ public class SerializeAndReconstructTree {
         n3.left = n6;
         n3.right = n7;
         n4.left = n8;
-        Queue<Integer> queue = preSerialize(n1);
-        for (Integer integer : queue) {
-            System.out.print(integer + "-");
-        }
-//        in(n0);
-//        post(n0);
+//        Queue<Integer> queue = preSerialize(n1);
+        Stack<Integer> stack = postSerialize(n1);
+//        while (!stack.isEmpty()) {
+//            System.out.print(stack.pop() + "-");
+//        }
+        BtNode head = postReconstruct(stack);
+        System.out.println();
+        Tools.printBinaryTree(head);
     }
 
     public static void main(String[] args) {
