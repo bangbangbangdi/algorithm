@@ -1,7 +1,7 @@
 package basicDataStructure.binaryTree;
 
 // 1）可以用先序或者中序或者后序或者按层遍历，来实现二叉树的序列化
-// 2）用了什么方式序列化，就用什么样的方式反序列化
+// 2）用了什么方式序列化，就用什么样的方式反序列化,中序遍历没法办反序列化，因为没有办法判断那个是头节点
 
 import tool.BtNode;
 import tool.Tools;
