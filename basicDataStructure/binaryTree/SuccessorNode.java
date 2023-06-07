@@ -1,5 +1,7 @@
 package basicDataStructure.binaryTree;
 
+// 给你二叉树中的某个节点，返回该节点的后继节点
+// 后继节点:对一颗二叉树进行中序遍历，当前节点的后一个节点即该节点的后续节点
 public class SuccessorNode {
 
     public static class Node {
@@ -25,9 +27,9 @@ public class SuccessorNode {
             return cur;
         }
         Node parent = cur.parent;
-        while (cur != parent.left) {
+        while (parent != null && cur != parent.left) {
             cur = parent;
-            parent = cur.parent != null ? cur.parent : parent;
+            parent = cur.parent;
         }
         return parent;
     }
