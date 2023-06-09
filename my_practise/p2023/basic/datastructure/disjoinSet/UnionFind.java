@@ -34,7 +34,7 @@ public class UnionFind {
     public static class UnionSet<V> {
         private HashMap<V, Node<V>> nodes;
         private HashMap<Node<V>, Node<V>> parents;
-        private HashMap<Node<V>, Integer> size;
+        public HashMap<Node<V>, Integer> size;
 
         public UnionSet(List<V> list) {
             if (list == null) {
