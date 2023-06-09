@@ -38,9 +38,57 @@ public class UnRecursiveTraversalBT {
             return;
         }
         Stack<BtNode> stack = new Stack<>();
-        stack.push(node);
-        while(!stack.isEmpty() && node){
+        while (!stack.isEmpty() || node != null) {
+            if (node != null) {
+                stack.push(node);
+                node = node.left;
+            } else {
+                node = stack.pop();
+                System.out.print(node.value + " ");
+                node = node.right;
+            }
+        }
+    }
 
+    public static void post(BtNode node) {
+        if (node == null) {
+            return;
+        }
+        Stack<BtNode> stack1 = new Stack<>();
+        Stack<BtNode> stack2 = new Stack<>();
+        stack1.push(node);
+        while (!stack1.empty()) {
+            node = stack1.pop();
+            stack2.push(node);
+            if (node.left != null) {
+                stack1.push(node.left);
+            }
+            if (node.right != null) {
+                stack1.push(node.right);
+            }
+        }
+        while (!stack2.isEmpty()) {
+            System.out.print(stack2.pop().value + " ");
+        }
+    }
+
+    public static void post2(BtNode node) {
+        if (node == null) {
+            return;
+        }
+        BtNode c = null;
+        Stack<BtNode> stack = new Stack<>();
+        stack.push(node);
+        while (!stack.empty()) {
+            c = stack.peek();
+            if (c.left != null && c.left != node && c.right != node) {
+                stack.push(c.left);
+            } else if (c.right != null && c.right != node) {
+                stack.push(c.right);
+            } else {
+                node = stack.pop();
+                System.out.print(node.value + " ");
+            }
         }
     }
 
@@ -60,7 +108,11 @@ public class UnRecursiveTraversalBT {
         n2.left = n5;
         n2.right = n6;
         n3.left = n7;
-        pre(n0);
+//        pre(n0);
+//        in(n0);
+        post(n0);
+        System.out.println();
+        post2(n0);
     }
 
     public static void main(String[] args) {
