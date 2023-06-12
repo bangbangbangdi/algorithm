@@ -19,9 +19,9 @@ public class Dijkstra {
 
     public static class NodeDistance {
         public Node node;
-        public Integer distance;
+        public int distance;
 
-        public NodeDistance(Node node, Integer distance) {
+        public NodeDistance(Node node, int distance) {
             this.node = node;
             this.distance = distance;
         }
@@ -34,17 +34,17 @@ public class Dijkstra {
     }
 
     public static class Heap<V> {
+        public ArrayList<V> heap;
         public HashMap<V, Integer> map;
         public Set<V> selected;
-        public int size;
-        public ArrayList<V> heap;
         public Comparator<V> comp;
+        public int size;
 
         public Heap(Comparator<V> comp) {
+            this.heap = new ArrayList<>();
             this.map = new HashMap<>();
             this.selected = new HashSet<>();
             this.size = 0;
-            this.heap = new ArrayList<>();
             this.comp = comp;
         }
 
@@ -56,8 +56,8 @@ public class Dijkstra {
             V ans = heap.get(0);
             swap(0, --size);
             heapify(0);
-            map.remove(ans);
             selected.add(ans);
+            map.remove(ans);
             return ans;
         }
 
@@ -69,13 +69,24 @@ public class Dijkstra {
                 Integer index = map.get(value);
                 heap.set(index, value);
                 heapInsert(index);
-                // 以下这步可省略
                 heapify(index);
             } else {
-                map.put(value, size);
                 heap.add(size, value);
+                map.put(value, size);
+                heapInsert(size);
                 size++;
             }
+        }
+
+        public void swap(int i, int j) {
+            if (i == j) {
+                return;
+            }
+            V tmp = heap.get(i);
+            heap.set(i, heap.get(j));
+            map.put(heap.get(i), i);
+            heap.set(j, tmp);
+            map.put(heap.get(j), j);
         }
 
         public void heapInsert(int index) {
@@ -98,20 +109,12 @@ public class Dijkstra {
                 leftIndex = index * 2 + 1;
             }
         }
-
-        public void swap(int i, int j) {
-            if (i == j) {
-                return;
-            }
-            V tmp = heap.get(i);
-            heap.set(i, heap.get(j));
-            map.put(heap.get(i), i);
-            heap.set(j, tmp);
-            map.put(heap.get(j), j);
-        }
     }
 
     public static HashMap<Node, Integer> dijkstra(Graph graph, Node from) {
+        if (graph == null || from == null) {
+            return null;
+        }
         HashMap<Node, Integer> ans = new HashMap<>();
         HashMap<Node, NodeDistance> map = new HashMap<>();
         Comparator<NodeDistance> comp = new Comparator<NodeDistance>() {
@@ -127,85 +130,91 @@ public class Dijkstra {
                 heap.addOrUpdateOrIgnore(map.get(node));
                 continue;
             }
-            map.put(node,new NodeDistance(node,Integer.MAX_VALUE));
+            map.put(node, new NodeDistance(node, Integer.MAX_VALUE));
             heap.addOrUpdateOrIgnore(map.get(node));
         }
-        while(!heap.isEmpty()){
+        while (!heap.isEmpty()) {
             NodeDistance pop = heap.pop();
-
+            ans.put(pop.node, pop.distance);
+            for (Edge edge : pop.node.edges) {
+                Node to = edge.to;
+                NodeDistance nodeDistance = map.get(to);
+                nodeDistance.setDistance(pop.distance + edge.value);
+                heap.addOrUpdateOrIgnore(nodeDistance);
+            }
+        }
         return ans;
     }
 
-//    public static void test() {
-//        Node n1 = new Node(1);
-//        Node n2 = new Node(2);
-//        Node n3 = new Node(3);
-//        Node n4 = new Node(4);
-//        Node n5 = new Node(5);
-//
-//        Edge e1 = new Edge(n1, n2, 1);
-//        Edge e6 = new Edge(n1, n3, 6);
-//        Edge e2 = new Edge(n2, n3, 2);
-//        Edge e3 = new Edge(n2, n4, 3);
-//        Edge e4 = new Edge(n2, n5, 4);
-//        Edge e10 = new Edge(n3, n5, 10);
-//
-//        n1.nexts.add(n2);
-//        n1.nexts.add(n3);
-//        n2.nexts.add(n3);
-//        n2.nexts.add(n4);
-//        n3.nexts.add(n5);
-//        n2.nexts.add(n5);
-//
-//        n1.edges.add(e1);
-//        n1.edges.add(e6);
-//        n2.edges.add(e2);
-//        n2.edges.add(e3);
-//        n2.edges.add(e4);
-//        n3.edges.add(e10);
-//
-//        Graph graph = new Graph();
-//        graph.nodes.put(1, n1);
-//        graph.nodes.put(2, n2);
-//        graph.nodes.put(3, n3);
-//        graph.nodes.put(4, n4);
-//        graph.nodes.put(5, n5);
-//
-//        graph.edges.add(e1);
-//        graph.edges.add(e2);
-//        graph.edges.add(e3);
-//        graph.edges.add(e4);
-//        graph.edges.add(e6);
-//        graph.edges.add(e10);
-//
-//        HashMap<Node, Integer> res = dijkstra(graph, n1);
-//        for (Node node : res.keySet()) {
-//            System.out.println(node.value + " : " + res.get(node));
-//        }
-//
-////        NodeRecord<Node> re1 = new NodeRecord<>(n1, 5);
-////        NodeRecord<Node> re2 = new NodeRecord<>(n2, 4);
-////        NodeRecord<Node> re3 = new NodeRecord<>(n3, 100);
-////
-////        Heap<NodeRecord<Node>> heap = new Heap<>(3, new NodeRecordCom());
-////        heap.addOrUpdateOrIgnore(re1);
-////        heap.addOrUpdateOrIgnore(re2);
-////        heap.addOrUpdateOrIgnore(re3);
-////        re3.setDistance(1);
-////        heap.addOrUpdateOrIgnore(re3);
-////
-////        NodeRecord<Node> p1 = heap.pop();
-////        NodeRecord<Node> p2 = heap.pop();
-////        NodeRecord<Node> p3 = heap.pop();
-////
-////        System.out.println(p1.node.value + " : " + p1.distance);
-////        System.out.println(p2.node.value + " : " + p2.distance);
-////        System.out.println(p3.node.value + " : " + p3.distance);
-//    }
-//
-//    public static void main(String[] args) {
-//        test();
-//    }
+    public static void test() {
+        Node n1 = new Node(1);
+        Node n2 = new Node(2);
+        Node n3 = new Node(3);
+        Node n4 = new Node(4);
+        Node n5 = new Node(5);
 
+        Edge e1 = new Edge(n1, n2, 1);
+        Edge e6 = new Edge(n1, n3, 6);
+        Edge e2 = new Edge(n2, n3, 2);
+        Edge e3 = new Edge(n2, n4, 3);
+        Edge e4 = new Edge(n2, n5, 4);
+        Edge e10 = new Edge(n3, n5, 10);
+
+        n1.nexts.add(n2);
+        n1.nexts.add(n3);
+        n2.nexts.add(n3);
+        n2.nexts.add(n4);
+        n3.nexts.add(n5);
+        n2.nexts.add(n5);
+
+        n1.edges.add(e1);
+        n1.edges.add(e6);
+        n2.edges.add(e2);
+        n2.edges.add(e3);
+        n2.edges.add(e4);
+        n3.edges.add(e10);
+
+        Graph graph = new Graph();
+        graph.nodes.put(1, n1);
+        graph.nodes.put(2, n2);
+        graph.nodes.put(3, n3);
+        graph.nodes.put(4, n4);
+        graph.nodes.put(5, n5);
+
+        graph.edges.add(e1);
+        graph.edges.add(e2);
+        graph.edges.add(e3);
+        graph.edges.add(e4);
+        graph.edges.add(e6);
+        graph.edges.add(e10);
+
+        HashMap<Node, Integer> res = dijkstra(graph, n1);
+        for (Node node : res.keySet()) {
+            System.out.println(node.value + " : " + res.get(node));
+        }
+
+//        NodeRecord<Node> re1 = new NodeRecord<>(n1, 5);
+//        NodeRecord<Node> re2 = new NodeRecord<>(n2, 4);
+//        NodeRecord<Node> re3 = new NodeRecord<>(n3, 100);
+//
+//        Heap<NodeRecord<Node>> heap = new Heap<>(3, new NodeRecordCom());
+//        heap.addOrUpdateOrIgnore(re1);
+//        heap.addOrUpdateOrIgnore(re2);
+//        heap.addOrUpdateOrIgnore(re3);
+//        re3.setDistance(1);
+//        heap.addOrUpdateOrIgnore(re3);
+//
+//        NodeRecord<Node> p1 = heap.pop();
+//        NodeRecord<Node> p2 = heap.pop();
+//        NodeRecord<Node> p3 = heap.pop();
+//
+//        System.out.println(p1.node.value + " : " + p1.distance);
+//        System.out.println(p2.node.value + " : " + p2.distance);
+//        System.out.println(p3.node.value + " : " + p3.distance);
+    }
+
+    public static void main(String[] args) {
+        test();
+    }
 
 }
