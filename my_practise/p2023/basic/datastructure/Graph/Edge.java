@@ -15,7 +15,7 @@ public class Edge {
     public Node from;
     public Node to;
 
-    public Edge(int value, Node from, Node to) {
+    public Edge(Node from, Node to,int value) {
         this.value = value;
         this.from = from;
         this.to = to;
