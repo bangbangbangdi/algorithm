@@ -1,41 +1,46 @@
-package basicDataStructure.Graph;
+package my_practise.p2023.basic.datastructure.Graph;
+
+import basicDataStructure.disjoinSet.UnionFind;
 
 import java.util.*;
 
-//1）可以从任意节点出发来寻找最小生成树
-//2）某个点加入到被选取的点中后，解锁这个点出发的所有新的边
-//3）在所有解锁的边中选最小的边，然后看看这个边会不会形成环
-//4）如果会，不要当前边，继续考察剩下解锁的边中最小的边，重复3）
-//5）如果不会，要当前边，将该边的指向点加入到被选取的点中，重复2）
-//6）当所有点都被选取，最小生成树就得到了
+/**
+ * projectName:    algorithm1
+ * package:        my_practise.p2023.basic.datastructure.Graph
+ * className:      Prim
+ * author:     BangDi
+ * description:Prim算法生成最小生成树
+ * date:    2023/6/13 11:48
+ * version:    1.0
+ */
 public class Prim {
 
-    public static Set<Edge> prim(Graph graph) {
-        if (graph == null) {
+    public static Set<Edge> prim(Graph graph){
+        if (graph == null){
             return null;
         }
-        Node node = graph.nodes.values().stream().findFirst().get();
-        PriorityQueue<Edge> heap = new PriorityQueue<>(new EdgeComparator());
-        HashSet<Node> used = new HashSet<>();
-        HashSet<Edge> ans = new HashSet<>();
-        used.add(node);
+        ArrayList<Node> nodes = new ArrayList<>(graph.nodes.values());
+        UnionFind.UnionSet<Node> unionSet = new UnionFind.UnionSet<>(nodes);
+        PriorityQueue<Edge> heap = new PriorityQueue<>(new Comparator<Edge>() {
+            @Override
+            public int compare(Edge o1, Edge o2) {
+                return o1.value - o2.value;
+            }
+        });
+        Set<Edge> ans = new HashSet<>();
+        Node node = nodes.get(0);
         heap.addAll(node.edges);
-        while (!heap.isEmpty()) {
-            Edge cur = heap.poll();
-            if (!used.contains(cur.to)) {
-                ans.add(cur);
-                used.add(cur.to);
-                heap.addAll(cur.to.edges);
+        while(!heap.isEmpty()){
+            Edge edge = heap.poll();
+            Node from = edge.from;
+            Node to = edge.to;
+            if (!unionSet.isSameSet(from,to)){
+                unionSet.union(from,to);
+                ans.add(edge);
+                heap.addAll(to.edges);
             }
         }
         return ans;
-    }
-
-    public static class EdgeComparator implements Comparator<Edge> {
-        @Override
-        public int compare(Edge o1, Edge o2) {
-            return o1.weight - o2.weight;
-        }
     }
 
     public static void test(){
@@ -92,7 +97,7 @@ public class Prim {
 
         Set<Edge> kruskal = prim(graph);
         for (Edge edge : kruskal) {
-            System.out.println(edge.weight);
+            System.out.println(edge.value);
         }
     }
 
