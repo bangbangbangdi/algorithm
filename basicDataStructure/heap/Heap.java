@@ -3,6 +3,7 @@ package basicDataStructure.heap;
 import tool.Tools;
 
 import java.util.Arrays;
+import java.util.PriorityQueue;
 
 public class Heap {
 
@@ -103,6 +104,7 @@ public class Heap {
         }
     }
 
+/*
     public static void test() {
         int testTime = 1000000;
         int maxSize = 100;
@@ -129,6 +131,41 @@ public class Heap {
         }
         System.out.println(succeed ? "Nice" : "Fuck");
     }
+
+    public static void main(String[] args) {
+        test();
+    }
+
+*/
+public static void test() {
+    int testTime = 1000000;
+    int maxSize = 100;
+    int maxValue = 10;
+    boolean succeed = true;
+    for (int i = 0; i < testTime && succeed; i++) {
+        int[] arr = Tools.generateRandomArray(maxSize, maxValue);
+        int[] copyArr = Tools.copyArr(arr);
+        Arrays.sort(copyArr);
+        MyHeap myHeap = new MyHeap(maxSize);
+        PriorityQueue<Integer> rightHeap = new PriorityQueue<>((o1, o2) -> (o2 - o1));
+        for (int k : arr) {
+            if (!myHeap.isEmpty() && Math.random() < 0.5) {
+                int myPop = myHeap.pop();
+                int rightPop = rightHeap.poll();
+//                System.out.println("myPop = " + myPop + ";rightPop = " + rightPop);
+                if (myPop != rightPop) {
+                    System.out.println("myPop = " + myPop + ";rightPop = " + rightPop);
+                    succeed = false;
+                }
+            } else {
+//                System.out.println("push " + k);
+                myHeap.push(k);
+                rightHeap.add(k);
+            }
+        }
+    }
+    System.out.println(succeed ? "Nice" : "Fuck");
+}
 
     public static void main(String[] args) {
         test();

@@ -90,9 +90,9 @@ public class Dijkstra {
         }
 
         public void heapInsert(int index) {
-            while (comp.compare(heap.get(index), heap.get(index / 2)) > 0) {
-                swap(index, index / 2);
-                index = index / 2;
+            while (comp.compare(heap.get(index), heap.get((index-1) / 2)) > 0) {
+                swap(index, (index - 1) / 2);
+                index = (index - 1) / 2;
             }
         }
 

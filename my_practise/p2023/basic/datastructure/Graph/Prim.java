@@ -19,24 +19,23 @@ public class Prim {
         if (graph == null){
             return null;
         }
-        ArrayList<Node> nodes = new ArrayList<>(graph.nodes.values());
-        UnionFind.UnionSet<Node> unionSet = new UnionFind.UnionSet<>(nodes);
+        Set<Edge> ans = new HashSet<>();
+        Set<Node> selected = new HashSet<>();
         PriorityQueue<Edge> heap = new PriorityQueue<>(new Comparator<Edge>() {
             @Override
             public int compare(Edge o1, Edge o2) {
                 return o1.value - o2.value;
             }
         });
-        Set<Edge> ans = new HashSet<>();
-        Node node = nodes.get(0);
+        Node node = graph.nodes.values().stream().findFirst().get();
+        selected.add(node);
         heap.addAll(node.edges);
         while(!heap.isEmpty()){
             Edge edge = heap.poll();
-            Node from = edge.from;
             Node to = edge.to;
-            if (!unionSet.isSameSet(from,to)){
-                unionSet.union(from,to);
+            if (!selected.contains(to)){
                 ans.add(edge);
+                selected.add(to);
                 heap.addAll(to.edges);
             }
         }
