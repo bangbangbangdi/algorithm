@@ -18,46 +18,46 @@ import java.util.PriorityQueue;
 public class Heap {
 
     public static class MyHeap {
+
         private int[] heap;
         private int limit;
         private int size;
 
-        public MyHeap(int size) {
-            this.heap = new int[size];
-            this.limit = size;
+        public MyHeap(int limit) {
+            this.heap = new int[limit];
+            this.limit = limit;
             this.size = 0;
         }
 
-        public boolean isFull() {
-            return limit == size;
-        }
-
         public boolean isEmpty() {
-            return size == 0;
+            return size <= 0;
         }
 
-        public void push(int value) {
-            if (isFull()) {
+        public boolean isFull() {
+            return size >= limit;
+        }
+
+        public void push(int value){
+            if (isFull()){
                 throw new RuntimeException("Heap is Full");
             }
             heap[size] = value;
-            heapInsert(size);
-            size++;
+            heapInsert(size++);
         }
 
-        public int pop() {
-            if (isEmpty()) {
+        public int pop(){
+            if (isEmpty()){
                 throw new RuntimeException("Heap is Empty");
             }
             int ans = heap[0];
-            Tools.swap(heap, 0, --size);
+            Tools.swap(heap,0,--size);
             heapify(0);
             return ans;
         }
 
         public void heapInsert(int index) {
             while (heap[index] > heap[(index - 1) / 2]) {
-                Tools.swap(heap, index, (index-1) / 2);
+                Tools.swap(heap, index, (index - 1) / 2);
                 index = (index - 1) / 2;
             }
         }
@@ -70,7 +70,7 @@ public class Heap {
                 if (largestIndex == index) {
                     return;
                 }
-                Tools.swap(heap, index, largestIndex);
+                Tools.swap(heap,index,largestIndex);
                 index = largestIndex;
                 leftIndex = index * 2 + 1;
             }

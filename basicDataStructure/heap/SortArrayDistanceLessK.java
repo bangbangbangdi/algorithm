@@ -6,24 +6,27 @@ package basicDataStructure.heap;
 import tool.Tools;
 
 import java.util.Arrays;
+import java.util.PriorityQueue;
 
 public class SortArrayDistanceLessK {
 
-    public static void sortArrDistanceLessK(int[] arr, int K) {
+    public static void sortArrDistanceLessK(int[] arr, int k) {
         if (arr == null || arr.length == 1) {
             return;
         }
-        int N = arr.length - 1;
-        for (int i = N; i > N - K; i--) {
-            heapIfy(arr, i, N + 1);
+        // 默认小根堆
+        PriorityQueue<Integer> heap = new PriorityQueue<>();
+        int index = 0;
+        for (; index <= Math.min(arr.length, k); index++) {
+            heap.add(arr[index]);
         }
-        for (int i = N - K + 1; i >= 0; i--) {
-            heapIfy(arr, i, i + K);
-            Tools.swap(arr, i, i + K);
+        int i = 0;
+        for (; index < arr.length; i++, index++) {
+            heap.add(arr[index]);
+            arr[i] = heap.poll();
         }
-        for (int i = K; i >= 0; i--) {
-            heapIfy(arr,i,i);
-            Tools.swap(arr,0,i);
+        while (!heap.isEmpty()) {
+            arr[i++] = heap.poll();
         }
     }
 
@@ -42,8 +45,12 @@ public class SortArrayDistanceLessK {
     }
 
 
-
     public static void main(String[] args) {
-
+        int[] arr = {2, 3, 0, 1, 4, 5, 6, 9, 8, 7};
+        int k = 2;
+        sortArrDistanceLessK(arr, k);
+        for (int i : arr) {
+            System.out.print(i + " ");
+        }
     }
 }
