@@ -1,5 +1,9 @@
 package my_practise.p2023.basic.datastructure.trieTree;
 
+import tool.Tools;
+
+import java.util.HashMap;
+
 /**
  * projectName:    algorithm
  * package:        my_practise.p2023.basic.datastructure.trieTree
@@ -85,7 +89,93 @@ public class TrieTree {
             }
             return cur.pass;
         }
+    }
 
+    public static class Right {
+        private HashMap<String, Integer> map;
+
+        public Right() {
+            map = new HashMap<>();
+        }
+
+        public void insert(String str) {
+            if (str == null || str.length() == 0) {
+                return;
+            }
+            if (map.containsKey(str)) {
+                map.put(str, map.get(str) + 1);
+                return;
+            }
+            map.put(str, 1);
+        }
+
+        public int search(String str) {
+            if (str == null || str.length() == 0) {
+                return 0;
+            }
+            return map.get(str) == null ? 0 : map.get(str);
+        }
+
+        public void delete(String str) {
+            if (search(str) == 0) {
+                return;
+            }
+            if (map.get(str) == 1) {
+                map.remove(str);
+                return;
+            }
+            map.put(str, map.get(str) - 1);
+        }
+
+        public int prefixNumber(String str) {
+            if (str == null || str.length() == 0) {
+                return 0;
+            }
+            int res = 0;
+            for (String s : map.keySet()) {
+                res += s.startsWith(str) ? map.get(s) : 0;
+            }
+            return res;
+        }
+    }
+
+    public static void test() {
+        int testTime = 1000000;
+        int arrMaxSize = 10;
+        int strMaxSize = 10;
+        boolean succeed = true;
+        for (int i = 0; i < testTime && succeed; i++) {
+            String[] arr = Tools.generateRandomStringArray(arrMaxSize, strMaxSize);
+            double decide = Math.random();
+            Trie trie1 = new Trie();
+            Right right = new Right();
+            for (String s : arr) {
+                if (decide < 0.25) {
+                    trie1.insert(s);
+                    right.insert(s);
+                } else if (decide < 0.5) {
+                    trie1.delete(s);
+                    right.delete(s);
+                } else if (decide < 0.75) {
+                    int t1 = trie1.search(s);
+                    int r1 = right.search(s);
+                    if (t1 != r1) {
+                        succeed = false;
+                    }
+                } else {
+                    int pre1 = trie1.prefixNumber(s);
+                    int rPre1 = right.prefixNumber(s);
+                    if (pre1 != rPre1) {
+                        succeed = false;
+                    }
+                }
+            }
+        }
+        System.out.println(succeed ? "Nice" : "Fuck");
+    }
+
+    public static void main(String[] args) {
+        test();
     }
 
 }
