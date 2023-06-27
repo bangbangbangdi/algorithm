@@ -1,8 +1,10 @@
 package my_practise.p2023.pro.datastructure.monotonousStack;
 
+import java.util.Stack;
+
 /*
  * @param null:
-  * @return null
+ * @return null
  * @author BangDi
  * @description
  * 单调栈是什么?
@@ -20,5 +22,39 @@ package my_practise.p2023.pro.datastructure.monotonousStack;
  */
 public class MonotonousStack {
 
+    public static int[][] getNearLessNoRepeat(int[] arr) {
+        if (arr == null || arr.length < 1) {
+            return null;
+        }
+        int[][] res = new int[arr.length][2];
+        Stack<Integer> stack = new Stack<>();
+        int index = 0;
+        while (index < arr.length) {
+            while (!stack.isEmpty() && arr[stack.peek()] >= arr[index]) {
+                Integer i = stack.pop();
+                res[i][0] = stack.isEmpty() ? 0 : stack.peek() + 1;
+                res[i][1] = index - 1;
+            }
+            stack.push(index);
+            index++;
+        }
+        while (!stack.isEmpty()) {
+            Integer i = stack.pop();
+            res[i][0] = stack.isEmpty() ? 0 : stack.peek() + 1;
+            res[i][1] = arr.length - 1;
+        }
+        return res;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {6, 0, 2, 7, 8, 9, 3};
+        int[][] ans = getNearLessNoRepeat(arr);
+        for (int[] an : ans) {
+            for (int i : an) {
+                System.out.print(i + " ");
+            }
+            System.out.println();
+        }
+    }
 
 }
