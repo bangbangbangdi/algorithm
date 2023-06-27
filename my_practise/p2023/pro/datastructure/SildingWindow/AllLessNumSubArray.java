@@ -17,17 +17,17 @@ import java.util.LinkedList;
  */
 public class AllLessNumSubArray {
 
-    public static int allLessNumSubArr(int[] arr,int num){
-        if (arr == null || arr.length == 0 || num < 0){
+    public static int allLessNumSubArr(int[] arr, int num) {
+        if (arr == null || arr.length < 1 || num < 0) {
             return 0;
         }
-        LinkedList<Integer> maxQ = new LinkedList<>();
-        LinkedList<Integer> minQ = new LinkedList<>();
         int L = 0;
         int R = 0;
-        int ans = 0;
-        while(L < arr.length){
-            while(R < arr.length){
+        int res = 0;
+        LinkedList<Integer> maxQ = new LinkedList<>();
+        LinkedList<Integer> minQ = new LinkedList<>();
+        while (L < arr.length) {
+            while (R < arr.length) {
                 while(!maxQ.isEmpty() && arr[maxQ.peekLast()] <= arr[R]){
                     maxQ.pollLast();
                 }
@@ -41,7 +41,7 @@ public class AllLessNumSubArray {
                 }
                 R++;
             }
-            ans += R - L;
+            res += R - L;
             if (maxQ.peekFirst() == L){
                 maxQ.pollFirst();
             }
@@ -50,12 +50,12 @@ public class AllLessNumSubArray {
             }
             L++;
         }
-        return ans;
+        return res;
     }
 
     public static void main(String[] args) {
         //int[] arr = {2,2,2,10,2,2,2};
-        int[] arr = {3,2,1,5,4,1};
+        int[] arr = {3, 2, 1, 5, 4, 1};
         int num = 2;
         System.out.println(allLessNumSubArr(arr, num));
     }
