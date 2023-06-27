@@ -1,28 +1,35 @@
 package my_practise.p2023.pro.datastructure.SildingWindow;
 
+/**
+ * 假设一个固定大小为W的窗口，依次划过arr，
+ * 返回每一次滑出状况的最大值
+ * 例如，arr = [4,3,5,4,3,3,6,7], W = 3
+ * 返回：[5,5,5,4,6,7]
+ * @date 2023/6/23 9:27
+ */
 
 import tool.Tools;
 
 import java.util.LinkedList;
 
-public class Code01_SlidingWindowMaxArray {
+public class SlidingWindowMaxArray {
 
     public static int[] getMaxWindow(int[] arr, int w) {
-        if (arr == null || arr.length == 0 || arr.length - w < 0 || w == 0) {
+        if (arr == null || arr.length < 1 || w < 1 || arr.length - w < 0) {
             return null;
         }
-        LinkedList<Integer> maxQueue = new LinkedList<>();
         int[] ans = new int[arr.length - w + 1];
+        LinkedList<Integer> maxQ = new LinkedList<>();
         for (int i = 0; i < arr.length; i++) {
-            while (!maxQueue.isEmpty() && arr[maxQueue.peekLast()] < arr[i]) {
-                maxQueue.pollLast();
+            while (!maxQ.isEmpty() && arr[maxQ.peekLast()] < arr[i]) {
+                maxQ.pollLast();
             }
-            maxQueue.addLast(i);
-            if (maxQueue.peekFirst() == i - w) {
-                maxQueue.pollFirst();
+            maxQ.addLast(i);
+            if (i - w == maxQ.peekFirst()) {
+                maxQ.pollFirst();
             }
             if (i - w + 1 >= 0) {
-                ans[i - w + 1] = arr[maxQueue.peekFirst()];
+                ans[i - w + 1] = arr[maxQ.peekFirst()];
             }
         }
         return ans;
