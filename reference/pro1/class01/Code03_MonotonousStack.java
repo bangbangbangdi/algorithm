@@ -156,4 +156,14 @@ public class Code03_MonotonousStack {
 			}
 		}
 	}
+	//public static void main(String[] args) {
+	//	int[] arr = {6, 0, 2, 7, 8, 9, 3};
+	//	int[][] ans = getNearLessNoRepeat(arr);
+	//	for (int[] an : ans) {
+	//		for (int i : an) {
+	//			System.out.print(i + " ");
+	//		}
+	//		System.out.println();
+	//	}
+	//}
 }
