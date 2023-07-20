@@ -1,4 +1,4 @@
-package my_practise.p2023.pro.algorithm;
+package my_practise.p2023.pro.algorithm.FibonacciProblem;
 
 import java.util.ArrayList;
 import java.util.HashSet;
