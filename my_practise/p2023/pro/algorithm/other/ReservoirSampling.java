@@ -1,5 +1,8 @@
 package my_practise.p2023.pro.algorithm.other;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * projectName:    algorithm
  * package:        my_practise.p2023.pro.algorithm.other
@@ -14,4 +17,31 @@ package my_practise.p2023.pro.algorithm.other;
  * version:    1.0
  */
 public class ReservoirSampling {
+
+    /**
+     * @param size   袋子的最大容量
+     * @param maxInt 从0开始吐到最大球的编号
+     * @return 吐出的球放到Set里
+     */
+    public static int[] reservoirSampling(int size, int maxInt) {
+        if (size <= 0 || maxInt <= 0) {
+            return null;
+        }
+        int[] res = new int[size];
+        int index = 0;
+        int rand = 0;
+        while (index <= maxInt) {
+            if (index < size) {
+                res[index] = index;
+            } else {
+                rand = (int) ((index + 1) * Math.random());
+                if (rand > index){
+
+                }
+            }
+            index++;
+        }
+        return res;
+    }
+
 }
