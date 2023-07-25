@@ -1,5 +1,6 @@
 package my_practise.p2023.pro.algorithm.other;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,30 +19,67 @@ import java.util.Set;
  */
 public class ReservoirSampling {
 
-    /**
-     * @param size   袋子的最大容量
-     * @param maxInt 从0开始吐到最大球的编号
-     * @return 吐出的球放到Set里
-     */
-    public static int[] reservoirSampling(int size, int maxInt) {
-        if (size <= 0 || maxInt <= 0) {
-            return null;
-        }
-        int[] res = new int[size];
-        int index = 0;
-        int rand = 0;
-        while (index <= maxInt) {
-            if (index < size) {
-                res[index] = index;
-            } else {
-                rand = (int) ((index + 1) * Math.random());
-                if (rand > index){
+    public static class RandomBox {
+        // 记录添加吐出的总球数
+        private int N;
+        // 袋子里的球
+        private int[] bag;
+        // 袋子容量
+        private int capacity;
 
+        public RandomBox(int capacity) {
+            this.N = 0;
+            this.bag = new int[capacity];
+            this.capacity = capacity;
+        }
+
+        private int random(int N) {
+            return (int) (1 + N * Math.random());
+        }
+
+        public void add(int num) {
+            N++;
+            if (N <= capacity) {
+                bag[N - 1] = num;
+            } else {
+                if (random(N) <= capacity) {
+                    bag[random(capacity) - 1] = num;
                 }
             }
-            index++;
         }
-        return res;
+
+        public int[] choices() {
+            int[] ints = new int[capacity];
+            System.arraycopy(bag, 0, ints, 0, bag.length);
+            return ints;
+        }
+    }
+
+
+    public static void test() {
+        System.out.println("hello");
+        int all = 100;
+        int choose = 10;
+        int testTimes = 50000;
+        int[] counts = new int[all + 1];
+        for (int i = 0; i < testTimes; i++) {
+            RandomBox box = new RandomBox(choose);
+            for (int num = 1; num <= all; num++) {
+                box.add(num);
+            }
+            int[] ans = box.choices();
+            for (int j = 0; j < ans.length; j++) {
+                counts[ans[j]]++;
+            }
+        }
+
+        for (int i = 0; i < counts.length; i++) {
+            System.out.println(i + " times : " + counts[i]);
+        }
+    }
+
+    public static void main(String[] args) {
+        test();
     }
 
 }
