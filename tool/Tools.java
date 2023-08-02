@@ -369,10 +369,10 @@ public class Tools {
         }
     }
 
-    public static String generateRandomString(int strLen) {
+    public static String generateRandomString(int strLen,int maxChar) {
         char[] chars = new char[(int) (strLen * Math.random() + 1)];
         for (int i = 0; i < chars.length; i++) {
-            chars[i] = (char) ((int) (Math.random() * 6) + 97);
+            chars[i] = (char) ((int) (Math.random() * maxChar) + 97);
         }
         return String.valueOf(chars);
     }
@@ -380,7 +380,7 @@ public class Tools {
     public static String[] generateRandomStringArray(int arrLen, int strLen) {
         String[] arr = new String[(int) (arrLen * Math.random() + 1)];
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = generateRandomString(strLen);
+            arr[i] = generateRandomString(strLen,6);
         }
         return arr;
     }
