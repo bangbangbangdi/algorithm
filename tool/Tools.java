@@ -377,6 +377,17 @@ public class Tools {
         return String.valueOf(chars);
     }
 
+    public static int[][] generateDyadicArr(int maxSize, int maxIndex, int maxLength) {
+        int size = (int) ((maxSize + 1) * Math.random());
+        int[][] res = new int[size][];
+        for (int i = 0; i < res.length; i++) {
+            int index = (int) ((maxIndex + 1) * Math.random());
+            int length = (int) (1 + (maxLength) * Math.random());
+            res[i] = new int[]{index, index + length};
+        }
+        return res;
+    }
+
     public static String[] generateRandomStringArray(int arrLen, int strLen) {
         String[] arr = new String[(int) (arrLen * Math.random() + 1)];
         for (int i = 0; i < arr.length; i++) {
