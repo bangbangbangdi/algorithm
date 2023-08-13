@@ -88,6 +88,7 @@ public class Code04_CoverMax {
 		return ans;
 	}
 
+
 	public static void removeLowerOnCurDown(TreeSet<Rectangle> set, int curDown) {
 		List<Rectangle> removes = new ArrayList<>();
 		for (Rectangle rec : set) {
