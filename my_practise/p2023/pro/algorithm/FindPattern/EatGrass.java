@@ -1,5 +1,7 @@
 package my_practise.p2023.pro.algorithm.FindPattern;
 
+import java.util.HashMap;
+
 /**
  * projectName:    algorithm
  * package:        my_practise.p2023.pro.algorithm.FindPattern
@@ -17,4 +19,47 @@ package my_practise.p2023.pro.algorithm.FindPattern;
  * version:    1.0
  */
 public class EatGrass {
+
+    public static String compare(int rest) {
+        HashMap<Integer, String> dp = new HashMap<>();
+        dp.put(1, "Early");
+        return process(rest, dp);
+    }
+
+    public static String process(int rest, HashMap<Integer, String> dp) {
+        if (dp.containsKey(rest)) {
+            return dp.get(rest);
+        }
+        int next = rest - 1;
+        int i = 1;
+        while (next >= 0) {
+            if (next == 0 || process(next, dp).equals("Late")) {
+                dp.put(rest, "Early");
+                return "Early";
+            }
+            next = rest - (1 << (i++ * 2));
+        }
+        dp.put(rest, "Late");
+        return "Late";
+    }
+
+    public static String awesome(int rest){
+        return (rest % 5 == 0 || rest % 5 == 2) ? "Late" : "Early";
+    }
+
+    public static void main(String[] args) {
+        for (int i = 1; i < 100; i++) {
+            String r1 = compare(i);
+            String r2 = awesome(i);
+            if (!r1.equals(r2)){
+                System.out.println("i = " + i);
+                System.out.println("r1 = " + r1);
+                System.out.println("r2 = " + r2);
+                System.out.println("F");
+                return ;
+            }
+        }
+        System.out.println("Nice");
+    }
+
 }
