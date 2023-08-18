@@ -17,4 +17,40 @@ package my_practise.p2023.pro.algorithm.FindPattern;
  * version:    1.0
  */
 public class MSumToN {
+
+    public static boolean isMSum1(int num) {
+        int start = 1;
+        while (start < num) {
+            int sum = start;
+            int plus = start;
+            while (sum <= num) {
+                if (sum == num) {
+                    return true;
+                }
+                sum += ++plus;
+            }
+            start++;
+        }
+        return false;
+    }
+
+    public static boolean isMSum2(int num) {
+        return (num & (num - 1)) != 0;
+    }
+
+    public static void main(String[] args) {
+        for (int i = 1; i < 10000; i++) {
+            boolean r1 = isMSum1(i);
+            boolean r2 = isMSum2(i);
+            if (r1 != r2){
+                System.out.println("i = " + i);
+                System.out.println("r1 = " + r1);
+                System.out.println("r2 = " + r2);
+                System.out.println("F");
+                return ;
+            }
+        }
+        System.out.println("Nice");
+    }
+
 }
