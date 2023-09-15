@@ -1,6 +1,5 @@
 package my_practise.p2023.pro.algorithm.other;
 
-import com.sun.tools.hat.internal.util.Comparer;
 import tool.Tools;
 
 import java.util.Arrays;
