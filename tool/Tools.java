@@ -253,6 +253,9 @@ public class Tools {
         return nodes;
     }
 
+    public static int[] generateArr() {
+        return generateRandomArray(100, 10, false);
+    }
 
     public static int[] generateRandomArray(int maxSize, int maxValue) {
         int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
@@ -280,7 +283,7 @@ public class Tools {
     public static int[] generateRandomArray(int maxSize, int maxValue, int minValue) {
         int[] arr = new int[(int) ((maxSize + 1) * Math.random())];
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = (int) (minValue  + (maxValue - minValue + 1) * Math.random());
+            arr[i] = (int) (minValue + (maxValue - minValue + 1) * Math.random());
         }
         return arr;
     }
@@ -294,6 +297,52 @@ public class Tools {
         }
         System.out.println();
     }
+
+    public static int[][] generateMatrix(int maxLength, int maxWidth) {
+        return generateMatrix(maxLength, maxWidth, 10, true);
+    }
+
+    public static int[][] generateMatrix(int maxLength, int maxWidth, int maxVal, boolean isContainNegative) {
+        int length = (int) ((maxLength + 1) * Math.random());
+        int width = (int) ((maxWidth + 1) * Math.random());
+        int[][] matrix = new int[length][width];
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < width; j++) {
+                matrix[i][j] = isContainNegative ? (int) ((maxVal + 1) * Math.random() - (maxVal + 1) * Math.random())
+                        : (int) ((maxVal + 1) * Math.random());
+            }
+        }
+        return matrix;
+    }
+
+    public static void printMatrix(int[][] matrix) {
+        if (matrix == null || matrix.length == 0 || matrix[0] == null || matrix[0].length == 0) {
+            return;
+        }
+        int N = matrix.length;
+        int M = matrix[0].length;
+        for (int y = 0; y < M; y++) {
+            for (int x = 0; x < N; x++) {
+                System.out.print(addSpace(matrix[x][y], 5));
+            }
+            System.out.println();
+        }
+    }
+
+    public static String addSpace(int num, int length) {
+        if (length < 1) {
+            return "";
+        }
+        String str = String.valueOf(num);
+        if (str.length() >= length) {
+            return str;
+        }
+        int spaceLen = length - str.length();
+        int left = spaceLen >> 1;
+        int right = spaceLen - left;
+        return getSpace(left) + str + getSpace(right);
+    }
+
 
     public static void printStringArray(String[] str) {
         if (str == null) {
@@ -369,7 +418,7 @@ public class Tools {
         }
     }
 
-    public static String generateRandomString(int strLen,int maxChar) {
+    public static String generateRandomString(int strLen, int maxChar) {
         char[] chars = new char[(int) (strLen * Math.random() + 1)];
         for (int i = 0; i < chars.length; i++) {
             chars[i] = (char) ((int) (Math.random() * maxChar) + 97);
@@ -391,8 +440,20 @@ public class Tools {
     public static String[] generateRandomStringArray(int arrLen, int strLen) {
         String[] arr = new String[(int) (arrLen * Math.random() + 1)];
         for (int i = 0; i < arr.length; i++) {
-            arr[i] = generateRandomString(strLen,6);
+            arr[i] = generateRandomString(strLen, 6);
         }
         return arr;
+    }
+
+    public static void execute(Executable execution) {
+        executeTest(100000, execution);
+    }
+
+    public static void executeTest(int testTimes, Executable execution) {
+        boolean succeed = true;
+        for (int i = 0; i < testTimes && succeed; i++) {
+            succeed = execution.execute();
+        }
+        System.out.println(succeed ? "Nice" : "Oops");
     }
 }

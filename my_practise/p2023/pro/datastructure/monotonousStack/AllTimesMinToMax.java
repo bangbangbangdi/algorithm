@@ -48,6 +48,9 @@ public class AllTimesMinToMax {
         }
         Stack<Integer> stack = new Stack<>();
         stack.push(0);
+        // 这里由于不需要得到单调栈的结果因此可以省去建立额外的结构
+        //   这也是一大类优化的思路,如果最终的结果可以跟随整个过程求出,那么中间的结果可以只存储到变量中;
+        //   这里就是max    2024.2.4
         while (!stack.isEmpty()) {
             while (!stack.isEmpty() && (index == arr.length || arr[stack.peek()] > arr[index])) {
                 Integer i = stack.pop();

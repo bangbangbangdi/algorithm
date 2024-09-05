@@ -3,100 +3,64 @@ package tool;
 
 public class Test {
 
-    public static int manacher(String str) {
-        if (str == null || str.length() == 0) {
+    public static int compare(int[] arr) {
+        if (arr == null || arr.length == 0) {
             return 0;
         }
-        char[] chars = getChars(str);
-        int[] pArr = new int[chars.length];
-        int R = -1;
-        int C = -1;
-        int max = 0;
-        for (int i = 0; i < chars.length; i++) {
-            pArr[i] = i < R ? Math.min(pArr[2 * C - i], R - i) : 1;
-            while(i + pArr[i] < chars.length && i - pArr[i] > -1){
-                if (chars[i + pArr[i]] == chars[i - pArr[i]]){
-                    pArr[i]++;
-                }else {
-                    break;
+        int[] dp = new int[arr.length];
+        int res = 1;
+        dp[0] = 1;
+        for (int i = 1; i < arr.length; i++) {
+            int pre = 0;
+            for (int j = i - 1; j >= 0; j--) {
+                if (arr[i] > arr[j] && dp[j] > pre) {
+                    pre = dp[j];
                 }
             }
-            if (R < i + pArr[i]) {
-                C = i;
-                R = i + pArr[i];
-            }
-            max = Math.max(max, pArr[i]);
+            dp[i] = pre + 1;
+            res = Math.max(res, dp[i]);
         }
-
-        return max - 1;
+        return res;
     }
 
-    public static char[] getChars(String str) {
-        char[] chars = new char[str.length() * 2 + 1];
-        for (int i = 0; i < chars.length; i++) {
-            chars[i] = (i & 1) == 0 ? '#' : str.charAt(i / 2);
-        }
-        return chars;
-    }
-
-    public static int compare(String str) {
-        if (str == null || str.length() == 0) {
+    public static int lis(int[] arr) {
+        if (arr == null || arr.length == 0) {
             return 0;
         }
-        char[] chs = getChs(str);
-        int offset = 1;
-        int max = 0;
-        int cur = 1;
-        for (int i = 0; i < chs.length; i++) {
-            while (i - offset > -1 && i + offset < chs.length) {
-                if (chs[i - offset] == chs[i + offset]) {
-                    offset++;
-                    cur += 2;
+        int N = arr.length;
+        int[] top = new int[N];
+        int plies = 0;
+        for (int poker : arr) {
+            int left = 0, right = plies;
+            while (left < right) {
+                int mid = left + ((right - left) >> 1);
+                if (top[mid] < poker) {
+                    left = mid + 1;
                 } else {
-                    break;
+                    right = mid;
                 }
             }
-            max = Math.max(max, cur);
-            offset = 1;
-            cur = 1;
+            plies += left == plies ? 1 : 0;
+            top[left] = poker;
         }
-        return max / 2;
-    }
-
-
-    public static char[] getChs(String str) {
-        char[] chars = new char[str.length() * 2 + 1];
-        char[] arr = str.toCharArray();
-        int index = 0;
-        for (int i = 0; i < chars.length; i++) {
-            chars[i] = (i & 1) == 0 ? '#' : arr[index++];
-        }
-        return chars;
-    }
-
-    public static void test() {
-        int testTime = 1000000;
-        int maxSize = 10;
-        int maxValue = 3;
-        boolean succeed = true;
-        for (int i = 0; i < testTime && succeed; i++) {
-            String str = Tools.generateRandomString(maxSize, maxValue);
-            int r1 = manacher(str);
-            int r2 = compare(str);
-            System.out.println("str = " + str);
-            System.out.println("r1 = " + r1);
-            if (r1 != r2) {
-                succeed = false;
-                System.out.println("str = " + str);
-                System.out.println("r1 = " + r1);
-                System.out.println("r2 = " + r2);
-            }
-        }
-        System.out.println(succeed ? "Nice" : "Fuck");
+        return plies;
     }
 
     public static void main(String[] args) {
-        test();
+        boolean succeed = true;
+        for (int i = 0; i < 100000 && succeed; i++) {
+            int[] arr = Tools.generateRandomArray(100, 100);
+            int lis = lis(arr);
+            int compare = compare(arr);
+            if (lis != compare) {
+                Tools.printArray(arr);
+                System.out.println("lis = " + lis);
+                System.out.println("compare = " + compare);
+                succeed = false;
+            }
+        }
+        System.out.println(succeed ? "Nice" : "F");
+
     }
 
 }
